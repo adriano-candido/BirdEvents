@@ -1,0 +1,23 @@
+﻿Para rodar htaccess, localizar no apache:
+
+#LoadModule rewrite_module modules/mod_rewrite.so
+
+Remova a # e salve o arquivo e Reinicie todos os serviços.
+------------------------------------------
+
+
+.htaccess para redirecionar
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+ 
+RewriteRule ^(.+)$ index.php?url=$1&nbsp; [QSA,L]
+--------------------------
+
+
+.htaccess para nao permitir index
+
+Options -Indexes
+
+--------------------------

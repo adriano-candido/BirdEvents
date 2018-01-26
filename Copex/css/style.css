@@ -1,0 +1,91 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+.icon-block {
+    padding: 0 15px;
+}
+
+.icon-block .material-icons {
+    font-size: inherit;
+}
+
+.select-dropdown{
+    overflow-y: auto !important;
+}
+
+/* label color */
+.input-field label {
+    color: #2196f3;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #2196f3;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #2196f3;
+    box-shadow: 0 1px 0 0 #9e9e9e;
+}
+
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #2196f3;
+}
+
+label {
+    font-size: 0.8rem;
+    color: #616161;
+}
+
+input:not([type]):disabled,
+input:not([type])[readonly="readonly"],
+input[type=text]:disabled,
+input[type=text][readonly="readonly"],
+input[type=password]:disabled,
+input[type=password][readonly="readonly"],
+input[type=email]:disabled,
+input[type=email][readonly="readonly"],
+input[type=url]:disabled,
+input[type=url][readonly="readonly"],
+input[type=time]:disabled,
+input[type=time][readonly="readonly"],
+input[type=date]:disabled,
+input[type=date][readonly="readonly"],
+input[type=datetime]:disabled,
+input[type=datetime][readonly="readonly"],
+input[type=datetime-local]:disabled,
+input[type=datetime-local][readonly="readonly"],
+input[type=tel]:disabled,
+input[type=tel][readonly="readonly"],
+input[type=number]:disabled,
+input[type=number][readonly="readonly"],
+input[type=search]:disabled,
+input[type=search][readonly="readonly"],
+textarea.materialize-textarea:disabled,
+textarea.materialize-textarea[readonly="readonly"]{
+    color: #808080;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.26);
+}
+
+.select-wrapper input.select-dropdown:disabled {
+    color: #808080;
+}
+
+.btn, .btn-large :not(.btn-flat) :not(.btn-floating)  {
+    background-color: #2196f3;
+}
