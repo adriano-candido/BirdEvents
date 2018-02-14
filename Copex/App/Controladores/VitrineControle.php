@@ -22,7 +22,7 @@ class VitrineControle extends Controlador {
     }
 
     public function processar($parametros) {
-        $this->dados['pagina'] = "Seja bem vindo(a) ao sistema COPEX-FVS!";
+        $this->dados['pagina'] = "Seja bem vindo(a) à COPEX-FVS!";
 
         $acao = Util::get_post_action('sair');
         if ($acao == 'sair') {
