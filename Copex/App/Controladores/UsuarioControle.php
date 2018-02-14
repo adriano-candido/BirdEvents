@@ -64,9 +64,9 @@ class UsuarioControle extends Controlador {
                 $this->dados['usuario'] = $this->usuario;
                 $this->dados['acao'] = 'editar';
                 $this->dados['disabled'] = 'disabled';
-                $this->dados['permissoesVinculadas'] = (
+                $this->dados['permissoesVinculadas'] = unserialize((
                         new EntidadeDAO(new VinculoUsuarioPermissao())
-                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId());
+                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId())[0]->getPermissao());
 
                 //Verifica se houve ação
                 if ($acao == 'editar') {
@@ -82,9 +82,9 @@ class UsuarioControle extends Controlador {
                 $this->dados['usuario'] = $this->usuario;
                 $this->dados['acao'] = 'salvar';
                 $this->dados['disabled'] = '';
-                $this->dados['permissoesVinculadas'] = (
+                $this->dados['permissoesVinculadas'] = unserialize((
                         new EntidadeDAO(new VinculoUsuarioPermissao())
-                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId());
+                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId())[0]->getPermissao());
 
 
                 //Verifica se houve ação
@@ -112,18 +112,11 @@ class UsuarioControle extends Controlador {
                         #----------------------Vinculando permissões--------------
 
                         $daoPermissao = new EntidadeDAO(new VinculoUsuarioPermissao());
-
-                        foreach ($this->dados['permissoesVinculadas'] as $permissaoVinculada) {
-                            $daoPermissao->excluir($permissaoVinculada->getId());
-                        }
-
-                        foreach ($_POST['permissoes'] as $permissao) {
-                            $vinculo = new VinculoUsuarioPermissao();
-                            $vinculo->setUsuario($this->usuario->getUsuario()->getId());
-                            $vinculo->setPermissao($permissao);
+                        $vinculo = $daoPermissao->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId())[0];
+                            $vinculo->setPermissao(serialize($_POST['permissoes']));
 
                             $daoPermissao->salvar($vinculo);
-                        }
+                        
 
 
                         #------------ Um case para cada variação de usuário ------------------------------------
@@ -219,9 +212,9 @@ class UsuarioControle extends Controlador {
                 }
                 $this->dados['usuario'] = $this->usuario;
 
-                $this->dados['permissoesVinculadas'] = (
+                $this->dados['permissoesVinculadas'] = unserialize((
                         new EntidadeDAO(new VinculoUsuarioPermissao())
-                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId());
+                        )->pesquisarOnde('usuario', $this->usuario->getUsuario()->getId())[0]->getPermissao());
 
 
                 break;
@@ -264,13 +257,12 @@ class UsuarioControle extends Controlador {
 
                         $daoPermissao = new EntidadeDAO(new VinculoUsuarioPermissao());
 
-                        foreach ($_POST['permissoes'] as $permissao) {
+                        
                             $vinculo = new VinculoUsuarioPermissao();
                             $vinculo->setUsuario($this->usuario->getId());
-                            $vinculo->setPermissao($permissao);
-
+                            $vinculo->setPermissao(serialize($_POST['permissoes']));
                             $daoPermissao->salvar($vinculo);
-                        }
+                        
 
                         #------------ Um case para cada variação de usuário ------------------------------------
 

@@ -18,25 +18,30 @@
                         <span class="secondary-content">CPF: <span class="cpf"><?= $professor->getUsuario()->getCpf() ?></span></span>
 
                     </li>
-                <?php endforeach;
+                <?php
+                endforeach;
             else:
                 ?>
                 <li class="collection-item">
                     <span class="title"></span>
                 </li>
-            <?php endif; ?>
+    <?php endif; ?>
         </ul>
 
 
-        <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
-            <i class="material-icons">visibility</i>
-        </button>
+        <?php if (\App\Modelos\Login::checaPermissao("Professor.Visualização")): ?>
 
-        <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
-            <i class="material-icons">edit</i>
-        </button>
+            <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
+                <i class="material-icons">visibility</i>
+            </button>
+        <?php endif; ?>
+         <?php if (\App\Modelos\Login::checaPermissao("Professor.Edição")): ?>
 
-        
+            <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
+                <i class="material-icons">edit</i>
+            </button>
+        <?php endif; ?>
+
 
 
     </form> 

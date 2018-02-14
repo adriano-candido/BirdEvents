@@ -7,6 +7,7 @@ use \App\Modelos\Login;
 class Util {
 
     private static $meses = [
+        '00' => '',
         '01' => 'Janeiro',
         '02' => 'Fevereiro',
         '03' => 'Março',
@@ -45,6 +46,7 @@ class Util {
         'Projeto.Visualização.0',        
         'Projeto.Visualização_Geral.0',
         'Projeto.Avaliar.0',
+        'Projeto.Exclusão.0',        
         'Setor.Cadastro.1',
         'Setor.Edição.0',
         'Setor.Pesquisa.1',
@@ -53,6 +55,7 @@ class Util {
         'Usuário.Edição.0',
         'Usuário.Pesquisa.1',
         'Usuário.Visualização.0',
+        'Usuário.Exclusão.0',
         'Visitante.Edição.0',
         'Visitante.Pesquisa.1',
         'Visitante.Visualização.0'
@@ -67,7 +70,8 @@ class Util {
         "Projeto" => "extension",
         "Setor" => "collections_bookmark",
         "Usuário" => "account_box",
-        "Visitante" => "account_box"
+        "Visitante" => "account_box",
+        "Home" => "home"
     ];
 
     public static function get_post_action() {
@@ -149,6 +153,11 @@ class Util {
 
     public static function tirarAcentos($string) {
         return utf8_encode(preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ç)/", "/(Ç)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U c C n N"), $string));
+    }
+
+    public static function getBaseURL(){
+        //return  '/birdevents/Copex/index.php?pg=';
+        return  '/birdevents/Copex/';
     }
 
 }

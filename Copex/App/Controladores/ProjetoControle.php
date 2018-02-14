@@ -100,10 +100,17 @@ class ProjetoControle extends Controlador {
 
                     $projeto->setTipo($_POST['tipoprojeto']);
                     $projeto->setDescricao($_POST['descricao']);
-                    $projeto->setInicioInscricao(Util::formataDataAnoMesDia($_POST['inicioInscricao']));
-                    $projeto->setFinalInscricao(Util::formataDataAnoMesDia($_POST['finalInscricao']));
                     $projeto->setInicioOcorrencia(Util::formataDataAnoMesDia($_POST['inicioOcorrencia']));
                     $projeto->setfinalOcorrencia(Util::formataDataAnoMesDia($_POST['finalOcorrencia']));
+                    if (isset($_POST['abrirInscricao'])) {
+                        $projeto->setAbrirInscricao('Sim');
+                        $projeto->setInicioInscricao(Util::formataDataAnoMesDia($_POST['inicioInscricao']));
+                        $projeto->setFinalInscricao(Util::formataDataAnoMesDia($_POST['finalInscricao']));
+                    } else {
+                        $projeto->setAbrirInscricao(addslashes('Não'));
+                        $projeto->setInicioInscricao('0000-00-00');
+                        $projeto->setFinalInscricao('0000-00-00');
+                    }
                     $projeto->setSituacao('enviado');
 
                     $errosAoSalvar = false;
@@ -233,15 +240,17 @@ class ProjetoControle extends Controlador {
 
                         #-----------------Salva Observação------------------
 
-                        $obs = new \App\Modelos\Observacao();
-                        $obs->setProjeto($projeto);
-                        $obs->setUsuario(\App\Modelos\Login::getUsuario());
-                        $obs->setDataPostagem(date('Y-m-d'));
-                        $obs->setConteudo('Projeto alterado e submetido novamente.');
+                        if ($_POST['observacao'] != '') {
+                            $obs = new \App\Modelos\Observacao();
+                            $obs->setProjeto($projeto);
+                            $obs->setUsuario(\App\Modelos\Login::getUsuario());
+                            $obs->setDataPostagem(date('Y-m-d'));
+                            $obs->setConteudo($_POST['observacao']);
 
-                        $dao = new EntidadeDAO($obs);
+                            $dao = new EntidadeDAO($obs);
 
-                        $dao->salvar($obs);
+                            $dao->salvar($obs);
+                        }
 
                         $this->retornos[] = "Projeto e anexos submetidos com sucesso!";
                     } else {
@@ -277,10 +286,18 @@ class ProjetoControle extends Controlador {
                     $projeto->setNome($_POST['nome']);
                     $projeto->setTipo($_POST['tipoprojeto']);
                     $projeto->setDescricao($_POST['descricao']);
-                    $projeto->setInicioInscricao(Util::formataDataAnoMesDia($_POST['inicioInscricao']));
-                    $projeto->setFinalInscricao(Util::formataDataAnoMesDia($_POST['finalInscricao']));
                     $projeto->setInicioOcorrencia(Util::formataDataAnoMesDia($_POST['inicioOcorrencia']));
                     $projeto->setfinalOcorrencia(Util::formataDataAnoMesDia($_POST['finalOcorrencia']));
+
+                    if (isset($_POST['abrirInscricao'])) {
+                        $projeto->setAbrirInscricao('Sim');
+                        $projeto->setInicioInscricao(Util::formataDataAnoMesDia($_POST['inicioInscricao']));
+                        $projeto->setFinalInscricao(Util::formataDataAnoMesDia($_POST['finalInscricao']));
+                    } else {
+                        $projeto->setAbrirInscricao(addslashes('Não'));
+                        $projeto->setInicioInscricao('0000-00-00');
+                        $projeto->setFinalInscricao('0000-00-00');
+                    }
                     $projeto->setSituacao('enviado');
 
                     $usuario = (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarOnde('id', \App\Modelos\Login::getUsuario()->getId())[0];
@@ -409,15 +426,17 @@ class ProjetoControle extends Controlador {
 
                         #-----------------Salva Observação------------------
 
-                        $obs = new \App\Modelos\Observacao();
-                        $obs->setProjeto($projeto);
-                        $obs->setUsuario(\App\Modelos\Login::getUsuario());
-                        $obs->setDataPostagem(date('Y-m-d'));
-                        $obs->setConteudo('Projeto submetido.');
+                        if ($_POST['observacao'] != '') {
+                            $obs = new \App\Modelos\Observacao();
+                            $obs->setProjeto($projeto);
+                            $obs->setUsuario(\App\Modelos\Login::getUsuario());
+                            $obs->setDataPostagem(date('Y-m-d'));
+                            $obs->setConteudo($_POST['observacao']);
 
-                        $dao = new EntidadeDAO($obs);
+                            $dao = new EntidadeDAO($obs);
 
-                        $dao->salvar($obs);
+                            $dao->salvar($obs);
+                        }
 
                         $this->retornos[] = "Projeto e anexos submetidos com sucesso!";
                     } else {
@@ -487,7 +506,7 @@ class ProjetoControle extends Controlador {
                     $idUsuarioLogado = Login::getUsuario()->getId();
 
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado'", array("nome" => "%" .$_POST['nome']. "%"));
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado'", array("nome" => "%" . $_POST['nome'] . "%"));
                     } else if (!isset($_POST['nome'])) {
                         $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE usuario ='$idUsuarioLogado' order by id desc limit 50 ;", array());
                     } else {

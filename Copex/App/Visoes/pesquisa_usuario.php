@@ -29,23 +29,27 @@
         </ul>
 
 
+        <?php if (\App\Modelos\Login::checaPermissao("Usuario.Visualização")): ?>
         <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
             <i class="material-icons">visibility</i>
         </button>
-
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Usuario.Edição")): ?>
         <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
             <i class="material-icons">edit</i>
         </button>
-
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Usuario.Exclusão")): ?>
         <button id="excluir" class="btn waves-effect waves-light" type="submit" name="excluir" disabled="">
             <i class="material-icons" >delete</i>
         </button>
-
+        <?php endif; ?>
 
     </form> 
-
+    
+    <?php if (\App\Modelos\Login::checaPermissao("Usuario.Cadastro")): ?>
     <div class="fixed-action-btn">
         <a href="usuario/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
     </div>
-
+    <?php endif; ?>
 </main>

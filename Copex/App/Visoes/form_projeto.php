@@ -124,43 +124,63 @@
             <br>
 
             <h6 class="grey-text text-darken-4">
-                <strong>Inscrições</strong>
+                <strong>Projeto</strong>
             </h6>
 
             <div class="row">
                 <div class="input-field col s6">
-                    <i class="material-icons prefix">border_color</i>
+                    <i class="material-icons prefix">date_range</i>
 
-                    <input type="text" class="datepicker" name="inicioInscricao" id="inicioInscricao" data-value="<?= $projeto->getInicioInscricao(); ?>" required>
-                    <label for="inicioInscricao">Início das Inscrições</label>
+                    <input type="text" class="datepicker" name="inicioOcorrencia" id="inicioOcorrencia" data-value="<?= str_replace(' de ', '-', \App\Util\Util::formataDataDiaMesAno($projeto->getInicioOcorrencia())); ?>" required>
+                    <label for="inicioOcorrencia">Início do Projeto</label>
                 </div>
                 <div class="input-field col s6">
-                    <i class="material-icons prefix">border_color</i>
+                    <i class="material-icons prefix">date_range</i>
 
-                    <input type="text" class="datepicker" name="finalInscricao" id="finalInscricao" data-value="<?= $projeto->getFinalInscricao(); ?>" required>
-                    <label for="finalInscricao">Encerramento das Inscrições</label>
+                    <input type="text" class="datepicker" name="finalOcorrencia" id="finalOcorrencia" data-value="<?= str_replace(' de ', '-', \App\Util\Util::formataDataDiaMesAno($projeto->getFinalOcorrencia())); ?>" required>
+                    <label for="finalOcorrencia">Encerramento do Projeto</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="switch">
+                    <strong> Abrir inscrição ? </strong> 
+
+                    <label>
+                        Não
+                        <input type="checkbox" name="abrirInscricao" value="Sim" <?php echo $projeto->getAbrirInscricao() == 'Sim' ? 'checked' : ''; ?> >
+                        <span class="lever"></span>
+                        Sim
+                    </label>
+                </div>
+
+            </div>
+
+
+            <div id="blocoInscricao" style="display:none">
+                <h6 class="grey-text text-darken-4">
+                    <strong>Inscrições</strong>
+                </h6>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">border_color</i>
+
+                        <input type="text" class="datepicker" name="inicioInscricao" id="inicioInscricao" data-value="<?= str_replace(' de ', '-', \App\Util\Util::formataDataDiaMesAno($projeto->getInicioInscricao())); ?>" required>
+                        <label for="inicioInscricao">Início das Inscrições</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">border_color</i>
+
+                        <input type="text" class="datepicker" name="finalInscricao" id="finalInscricao" data-value="<?= str_replace(' de ', '-', \App\Util\Util::formataDataDiaMesAno($projeto->getFinalInscricao())); ?>" required>
+                        <label for="finalInscricao">Encerramento das Inscrições</label>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <h6 class="grey-text text-darken-4">
-            <strong>Projeto</strong>
-        </h6>
-
-        <div class="row">
-            <div class="input-field col s6">
-                <i class="material-icons prefix">date_range</i>
-
-                <input type="text" class="datepicker" name="inicioOcorrencia" id="inicioOcorrencia" data-value="<?= $projeto->getInicioOcorrencia(); ?>" required>
-                <label for="inicioOcorrencia">Início do Projeto</label>
-            </div>
-            <div class="input-field col s6">
-                <i class="material-icons prefix">date_range</i>
-
-                <input type="text" class="datepicker" name="finalOcorrencia" id="finalOcorrencia" data-value="<?= $projeto->getFinalOcorrencia(); ?>" required>
-                <label for="finalOcorrencia">Encerramento do Projeto</label>
-            </div>
-        </div>
 
         <div class="divider"></div>
         <div class="section">
@@ -319,6 +339,15 @@
                 </ul>
             </div>
         </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">info</i>
+                <textarea id="textareaObservacao" class="materialize-textarea" name="observacao" ></textarea>
+                <label for="textareaObservacao"><h6 class="grey-text text-darken-4"><strong>Nova Observação</strong></h6></label>
+            </div>
+        </div>
+
     </div>
 
     <?php if ($projeto->getSituacao() == "alteracao"):
@@ -339,20 +368,6 @@
             <label >Nome</label>
         </div>
 
-
-        <!--div class="input-field col s6">
-            <i class="material-icons prefix">collections_bookmark</i>
-            <select name="curso" required>
-                <option value="" disabled selected>Selecione um Curso</option>
-        <?php if (isset($cursos) && count($cursos) > 0): foreach ($cursos as $curso): ?>
-                                                                <option value="<?= $curso->getId(); ?>" ><?= $curso->getNome(); ?></option>
-                <?php
-            endforeach;
-        endif;
-        ?>
-            </select>
-            <label>Curso</label>
-        </div -->
     </div>
 
 
@@ -450,42 +465,59 @@
         <h5 class="blue-text text-darken-3">Datas</h5>
         <br>
 
+
         <h6 class="grey-text text-darken-4">
-            <strong>Inscrições</strong>
+            <strong>Projeto</strong>
         </h6>
 
         <div class="row">
             <div class="input-field col s6">
-                <i class="material-icons prefix">border_color</i>
+                <i class="material-icons prefix">date_range</i>
 
-                <input type="text" class="datepicker" name="inicioInscricao" id="inicioInscricao" required>
-                <label for="inicioInscricao">Início das Inscrições</label>
+                <input type="text" class="datepicker" name="inicioOcorrencia" id="inicioOcorrencia" required>
+                <label for="inicioOcorrencia">Início do Projeto</label>
             </div>
             <div class="input-field col s6">
-                <i class="material-icons prefix">border_color</i>
+                <i class="material-icons prefix">date_range</i>
 
-                <input type="text" class="datepicker" name="finalInscricao" id="finalInscricao" required>
-                <label for="finalInscricao">Encerramento das Inscrições</label>
+                <input type="text" class="datepicker" name="finalOcorrencia" id="finalOcorrencia" required>
+                <label for="finalOcorrencia">Encerramento do Projeto</label>
             </div>
         </div>
-    </div>
+        <div class="row">
 
-    <h6 class="grey-text text-darken-4">
-        <strong>Projeto</strong>
-    </h6>
+            <div class="switch">
+                <strong> Abrir inscrição ? </strong> 
 
-    <div class="row">
-        <div class="input-field col s6">
-            <i class="material-icons prefix">date_range</i>
+                <label>
+                    Não
+                    <input type="checkbox" name="abrirInscricao" value="Sim">
+                    <span class="lever"></span>
+                    Sim
+                </label>
+            </div>
 
-            <input type="text" class="datepicker" name="inicioOcorrencia" id="inicioOcorrencia" required>
-            <label for="inicioOcorrencia">Início do Projeto</label>
         </div>
-        <div class="input-field col s6">
-            <i class="material-icons prefix">date_range</i>
 
-            <input type="text" class="datepicker" name="finalOcorrencia" id="finalOcorrencia" required>
-            <label for="finalOcorrencia">Encerramento do Projeto</label>
+        <div id="blocoInscricao" style="display:none">
+            <h6 class="grey-text text-darken-4">
+                <strong>Inscrições</strong>
+            </h6>
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">border_color</i>
+
+                    <input type="text" class="datepicker" name="inicioInscricao" id="inicioInscricao" required>
+                    <label for="inicioInscricao">Início das Inscrições</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">border_color</i>
+
+                    <input type="text" class="datepicker" name="finalInscricao" id="finalInscricao" required>
+                    <label for="finalInscricao">Encerramento das Inscrições</label>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -545,9 +577,10 @@
 
 
         <div class="row">
-            <div class="col s6">
-                <h6 class="grey-text text-darken-4"><strong>Observações</strong></h6>
-                <p class="grey-text text-darken-2">Aguardando Envio</p>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">info</i>
+                <textarea id="textareaObservacao" class="materialize-textarea" name="observacao" ></textarea>
+                <label for="textareaObservacao"><h6 class="grey-text text-darken-4"><strong>Observação</strong></h6></label>
             </div>
         </div>
     </div>

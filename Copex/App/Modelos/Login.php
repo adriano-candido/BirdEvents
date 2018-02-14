@@ -45,10 +45,8 @@ class Login {
 
     public static function getPermissoesUsuario() {
         $permissoesVinculadas = (new EntidadeDAO(new VinculoUsuarioPermissao()))->pesquisarOnde('usuario', self::getUsuario()->getId());
-        $resultado = [];
-        foreach ($permissoesVinculadas as $permissao) {
-            $resultado[] = $permissao->getPermissao();
-        }
+        $resultado = unserialize($permissoesVinculadas[0]->getPermissao());
+        
         return $resultado;
     }
 
@@ -56,12 +54,13 @@ class Login {
         if(self::getUsuario() == null){
             return 0;
         }
-        $permissoesVinculadas = (new EntidadeDAO(new VinculoUsuarioPermissao()))->pesquisarOnde('usuario', self::getUsuario()->getId());
+        $permissoesVinculadas = unserialize((new EntidadeDAO(new VinculoUsuarioPermissao())
+        )->pesquisarOnde('usuario', self::getUsuario()->getId())[0]->getPermissao());
         $temPermissao = 0;
 
         foreach ($permissoesVinculadas as $permissaoVinculada) {
 
-            $pVinculada = strtolower(Util::tirarAcentos($permissaoVinculada->getPermissao()));
+            $pVinculada = strtolower(Util::tirarAcentos($permissaoVinculada));
             $pVinculada = substr($pVinculada, 0, strrpos($pVinculada, "."));
 
             $p = strtolower(Util::tirarAcentos($permissao));

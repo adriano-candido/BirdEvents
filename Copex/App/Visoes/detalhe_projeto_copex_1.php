@@ -70,17 +70,8 @@
         </li>
         <li>
             <div class="collapsible-header"><h5 class="blue-text text-darken-3 valign-wrapper"><i class="material-icons ">event</i>Datas</h5></div>
-            <div class="collapsible-body"><div class="row">
-                    <div class="col s6">
-                        <h6 class="grey-text text-darken-4"><strong>Início Inscrições</strong></h6>
-                        <p class="grey-text text-darken-2"><?php echo \App\Util\Util::formataDataDiaMesAno($projeto->getInicioInscricao()); ?></p>
-                    </div>
+            <div class="collapsible-body">
 
-                    <div class="col s6">
-                        <h6 class="grey-text text-darken-4"><strong>Encerramento Inscrições</strong></h6>
-                        <p class="grey-text text-darken-2"><?php echo \App\Util\Util::formataDataDiaMesAno($projeto->getFinalInscricao()); ?></p>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col s6">
                         <h6 class="grey-text text-darken-4"><strong>Início Projeto</strong></h6>
@@ -92,6 +83,31 @@
                         <p class="grey-text text-darken-2"><?php echo \App\Util\Util::formataDataDiaMesAno($projeto->getFinalOcorrencia()); ?></p>
                     </div>
                 </div>
+
+
+                <div class="row">
+                    <div class="col s12">
+                        <h6 class="grey-text text-darken-4"><strong>Deseja Abrir Inscrição:</strong> <?= $projeto->getAbrirInscricao(); ?> </h6>
+                    </div>
+                </div>
+
+                <?php if ($projeto->getAbrirInscricao() == 'Sim') : ?>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <h6 class="grey-text text-darken-4"><strong>Início Inscrições</strong></h6>
+                            <p class="grey-text text-darken-2"><?php echo \App\Util\Util::formataDataDiaMesAno($projeto->getInicioInscricao()); ?></p>
+                        </div>
+
+                        <div class="col s6">
+                            <h6 class="grey-text text-darken-4"><strong>Encerramento Inscrições</strong></h6>
+                            <p class="grey-text text-darken-2"><?php echo \App\Util\Util::formataDataDiaMesAno($projeto->getFinalInscricao()); ?></p>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
             </div>
         </li>
         <li>
@@ -171,7 +187,7 @@
                             <p class="grey-text text-darken-2"><?= $situacoes[$projeto->getSituacao()] ?></p>
                         </div>
 
-                        
+
                     </div>
 
                     <div class="col s12 container">
@@ -243,7 +259,7 @@
 
                                     <div class="input-field col s12" >
                                         <i class="material-icons prefix">description</i>
-                                        <textarea id="textarea" class="materialize-textarea" name="observacao"></textarea>
+                                        <textarea id="textarea" class="materialize-textarea" name="observacao" required></textarea>
                                         <label for="textarea">Observação</label>
                                     </div>
                                 </div>

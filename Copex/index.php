@@ -20,6 +20,11 @@ if (!isset($_SESSION['roteador'])) {
 
 $roteador = $_SESSION['roteador'];
 $roteador->processar(NULL);
+/*
+$p = serialize(App\Util\Util::$permissoes);
 
+$consulta = Nucleo\DB::getConexao()->prepare("INSERT INTO `vinculousuariopermissao`(`usuario`, `permissao`) VALUES (3, :p);");
+        $consulta->bindValue(':p', $p);
 
+        $consulta->execute();*/
 ?>

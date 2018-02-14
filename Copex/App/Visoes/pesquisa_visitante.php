@@ -29,14 +29,16 @@
         </ul>
 
 
+        <?php if (\App\Modelos\Login::checaPermissao("Visitante.Visualização")): ?>
         <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" title="Visualizar" disabled="">
             <i class="material-icons">visibility</i>
         </button>
-
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Visitante.Edição")): ?>
         <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" title="Editar" disabled="">
             <i class="material-icons">edit</i>
         </button>
-
+        <?php endif; ?>
 
     </form> 
 

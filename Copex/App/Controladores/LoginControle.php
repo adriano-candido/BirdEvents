@@ -43,7 +43,6 @@ class LoginControle extends Controlador {
             }
         }
     }
-    
 
     public static function retornaNavPorAcesso() {
         $acesso = "";
@@ -61,7 +60,6 @@ class LoginControle extends Controlador {
                 $string = $permissoesUsuario[$index];
                 Util::criarArrayPermissao($permissoes, $string);
             }
-            
             ?> 
             <ul id="slide-out" class="collapsible side-nav" data-collapsible="accordion">
                 <li>
@@ -71,24 +69,29 @@ class LoginControle extends Controlador {
                     </div>
                 </li>
 
-                <?php foreach ($permissoes as $index => $permissao) : ?>
+                <li class="bold ">
+                    <a href="<?= \App\Util\Util::getBaseURL() . 'vitrine' ?>" class="collapsible-header waves-effect blue-text">
+                        <i class="material-icons"><?= Util::$icones['Home'] ?></i>Vitrine</a>
+                </li>
+
+            <?php foreach ($permissoes as $index => $permissao) : ?>
 
                     <li class="bold ">
                         <a class="collapsible-header waves-effect blue-text">
                             <i class="material-icons"><?= Util::$icones[$index] ?></i><?= $index ?></a>
                         <ul class="collapsible-body">
-                            <?php foreach ($permissao as $opcao) : ?>
+                <?php foreach ($permissao as $opcao) : ?>
                                 <?php if ($opcao['mostrar'] == 1) : ?>
-                            <li><a href="<?=  strtolower(Util::tirarAcentos($index ."/". $opcao['funcao'] ))?>"><?= str_replace("_", " ", $opcao['funcao']) ?></a></li>
+                                    <li><a href="<?= \App\Util\Util::getBaseURL() . strtolower(Util::tirarAcentos($index . "/" . $opcao['funcao'])) ?>"><?= str_replace("_", " ", $opcao['funcao']) ?></a></li>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </ul>
                     </li>
 
-                <?php endforeach; ?>
+            <?php endforeach; ?>
 
                 <li class="bold ">
-                    <form method="POST" action="login">
+                    <form method="POST" action="<?= \App\Util\Util::getBaseURL() . 'login' ?>">
                         <a class="collapsible-header waves-effect blue-text"><i class="material-icons">power_settings_new</i>
 
                             <button class="collapsible-header waves-effect blue-text" type="submit" name="sair" >
@@ -106,7 +109,7 @@ class LoginControle extends Controlador {
             <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
 
                 <li class="container">
-                    <form method="POST" id="formLogin" action="login">
+                    <form method="POST" id="formLogin" action="<?= \App\Util\Util::getBaseURL() . 'login' ?>">
                         <div class="center row" >
                             <h2 class="icon-block"><i class="material-icons">group</i> </h2>
                             <span>Efetue Login</span>

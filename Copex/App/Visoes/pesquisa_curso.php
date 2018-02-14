@@ -16,7 +16,8 @@
                         <input class="limited" type="checkbox" id="<?= $curso->getId() ?>" value="<?= $curso->getId() ?>" name="id[]"/>
                         <label for="<?= $curso->getId() ?>" ><?= $curso->getNome() ?></label>
                     </li>
-                <?php endforeach;
+                    <?php
+                endforeach;
             else:
                 ?>
                 <li class="collection-item">
@@ -25,20 +26,22 @@
             <?php endif; ?>
         </ul>
 
-
-        <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
-            <i class="material-icons">visibility</i>
-        </button>
-
-        <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
-            <i class="material-icons">edit</i>
-        </button>
-
+        <?php if (\App\Modelos\Login::checaPermissao("Curso.Visualização")): ?>
+            <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
+                <i class="material-icons">visibility</i>
+            </button>
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Curso.Edição")): ?>
+            <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
+                <i class="material-icons">edit</i>
+            </button>
+        <?php endif; ?>
 
     </form> 
 
-    <div class="fixed-action-btn">
-        <a href="curso/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
-    </div>
-
+    <?php if (\App\Modelos\Login::checaPermissao("Curso.Cadastro")): ?>
+        <div class="fixed-action-btn">
+            <a href="curso/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </div>
+    <?php endif; ?>
 </main>

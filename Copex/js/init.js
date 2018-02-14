@@ -22,7 +22,7 @@ $('form').submit(function () {
 $('input[name!="permissoes[]"]').on('click', function () {
     var _this = this;
     var checkboxes = $('input[name="permissoes[]"]');
-    
+
     for (var index = 0, tamanho = checkboxes.length; index < tamanho; index++) {
         var checkbox = checkboxes[index];
 
@@ -35,13 +35,13 @@ $('input[name!="permissoes[]"]').on('click', function () {
 $('input[name="permissoes[]"]').on('click', function () {
     var _this = this;
     var checkboxes = $('input[name!="permissoes[]"]');
-    
+
     for (var index = 0, tamanho = checkboxes.length; index < tamanho; index++) {
         var checkbox = checkboxes[index];
 
         if (checkbox.value.includes(_this.value.split('.')[0])) {
-            if(! _this.checked){
-            	checkbox.checked = false;
+            if (!_this.checked) {
+                checkbox.checked = false;
             }
         }
     }
@@ -66,7 +66,7 @@ $("input[name='tipoprojeto']").click(function () {
     alternaTipoProjetos(this.value);
 });
 
-function alternaTipoProjetos(tipoProjeto){
+function alternaTipoProjetos(tipoProjeto) {
     if (tipoProjeto === "institucional") {
         $("#blococurso").show(1000);
         $("#blocosetor").hide(1000);
@@ -82,14 +82,30 @@ function alternaTipoProjetos(tipoProjeto){
 $("form[name='form_projeto']").submit(function () {
     var tipoDeProjeto = $("input[name='tipoprojeto']:checked").val();
     var qtdCursosMarcados = $("input[name='curso[]']:checked").length;
-    if(tipoDeProjeto == "institucional" && qtdCursosMarcados < 4){
-        
+    var setorMarcado = $("select[name='setor'] option:selected").val();
+    if (tipoDeProjeto == "institucional" && qtdCursosMarcados < 4) {
+
         Materialize.toast("Para ser Institucional <br> Selecione no mínimo 4 cursos.", 4000);
- 
-    return false;
+
+        return false;
+    } else if (tipoDeProjeto == "curso" && qtdCursosMarcados < 1) {
+        Materialize.toast("Selecione no mínimo 1 curso.", 4000);
+
+        return false;
+    } else if (tipoDeProjeto == "outros" && setorMarcado == "") {
+        Materialize.toast("Selecione um setor.", 4000);
+        return false;
     }
-    
-    
+
+});
+
+$("form[name='form_usuario']").submit(function () {
+    var permissoes = $('input[name="permissoes[]"]:checked').length
+    if (permissoes < 1) {
+        Materialize.toast("Selecione no mínimo 1 permissão.", 4000);
+        return false;
+    }
+
 });
 
 // Alterna as opções disponíveis de acordo com a quantidade de itens selecionados no checkbox
@@ -140,6 +156,20 @@ function checarVincular() {
     }
 }
 
+$("input[name='abrirInscricao']").click(
+        function () {
+            verificaAbrirInscricao($(this));
+        }
+);
+
+function verificaAbrirInscricao(checkbox) {
+    if ($(checkbox).is(':checked')) {
+        $('#blocoInscricao').show(1000);
+    } else {
+        $('#blocoInscricao').hide(1000);
+    }
+}
+
 // Inicializadores de objetos
 $(document).ready(function () {
     $('.button-collapse').sideNav();
@@ -181,8 +211,8 @@ $(document).ready(function () {
     });
 
     alternaTipoProjetos($("input[name='tipoprojeto']:checked").val());
-    
-    
+
+    verificaAbrirInscricao($("input[name='abrirInscricao']"));
 });
 
 function validarCPF(cpf) {

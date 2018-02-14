@@ -12,7 +12,11 @@ class Roteador extends Controlador {
     protected $url = [];
 
     public function processar($parametros) {
-        if (isset($_GET['url'])) {
+        
+        if( strpos(\App\Util\Util::getBaseURL(), 'pg') > 0 && isset($_GET['pg'])){
+                    $this->url = $this->parseURL($_GET['pg']);
+        } else
+         if (isset($_GET['url'])) {            
             $this->url = $this->parseURL($_GET['url']);
         } else {
             $this->redirecionar("vitrine");

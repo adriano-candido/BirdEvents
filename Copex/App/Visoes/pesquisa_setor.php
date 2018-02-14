@@ -25,20 +25,23 @@
             <?php endif; ?>
         </ul>
 
-
+        <?php if (\App\Modelos\Login::checaPermissao("Setor.Visualização")): ?>
         <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" disabled="">
             <i class="material-icons">visibility</i>
         </button>
-
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Setor.Edição")): ?>
         <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" disabled="">
             <i class="material-icons">edit</i>
         </button>
-
+        <?php endif; ?>
 
     </form> 
 
+        <?php if (\App\Modelos\Login::checaPermissao("Setor.Cadastro")): ?>
     <div class="fixed-action-btn">
         <a href="setor/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
     </div>
+        <?php endif; ?>
 
 </main>

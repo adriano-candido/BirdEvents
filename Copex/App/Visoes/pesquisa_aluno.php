@@ -28,16 +28,18 @@
             <?php endif; ?>
         </ul>
 
+        <?php if (\App\Modelos\Login::checaPermissao("Aluno.Visualização")): ?>
+            <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" title="Visualizar" disabled="">
+                <i class="material-icons">visibility</i>
+            </button>
+        <?php endif; ?>
+        <?php if (\App\Modelos\Login::checaPermissao("Aluno.Edicão")): ?>
 
-        <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" title="Visualizar" disabled="">
-            <i class="material-icons">visibility</i>
-        </button>
+            <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" title="Editar" disabled="">
+                <i class="material-icons">edit</i>
+            </button>
 
-        <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" title="Editar" disabled="">
-            <i class="material-icons">edit</i>
-        </button>
-
-
+        <?php endif; ?>
     </form> 
 
 </main>

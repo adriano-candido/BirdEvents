@@ -16,6 +16,7 @@ class Projeto extends Entidade {
     private $inicioOcorrencia;
     private $finalOcorrencia;
     private $situacao;
+    private $abrirInscricao;
     private $mapa = [];
 
     public function __construct() {
@@ -110,6 +111,16 @@ class Projeto extends Entidade {
         $this->situacao = $situacao;
     }
 
+    
+    public function getAbrirInscricao() {
+        return $this->abrirInscricao;
+    }
+
+    public function setAbrirInscricao($abrirInscricao) {
+        $this->abrirInscricao = $abrirInscricao;
+    }
+
+    
     public function get($atributo) {
         return $this->$atributo;
     }

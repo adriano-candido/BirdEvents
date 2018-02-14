@@ -50,9 +50,9 @@
         <?php endif; ?>
     </form> 
 
-
+<?php if (\App\Modelos\Login::checaPermissao("Certificado.Cadastro")): ?>
     <div class="fixed-action-btn">
         <a href="certificado/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
     </div>
-
+<?php endif; ?>
 </main>
