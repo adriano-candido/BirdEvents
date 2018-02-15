@@ -32,6 +32,7 @@ $('input[name!="permissoes[]"]').on('click', function () {
     }
 });
 
+
 $('input[name="permissoes[]"]').on('click', function () {
     var _this = this;
     var checkboxes = $('input[name!="permissoes[]"]');
@@ -49,6 +50,7 @@ $('input[name="permissoes[]"]').on('click', function () {
 
 // Altera os campos do formulário do participante conforme o tipo de acesso
 $("input[name='tipoacesso']").click(function () {
+    permissoesPorUsuario(this.value);
     if (this.value === "aluno") {
         $("#blocoprofessor").hide(1000);
         $("#blocoaluno").show(1000);
@@ -213,6 +215,8 @@ $(document).ready(function () {
     alternaTipoProjetos($("input[name='tipoprojeto']:checked").val());
 
     verificaAbrirInscricao($("input[name='abrirInscricao']"));
+
+    $.getScript("js/permissoes.js");
 });
 
 function validarCPF(cpf) {
