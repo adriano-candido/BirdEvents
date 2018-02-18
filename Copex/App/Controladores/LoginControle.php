@@ -74,13 +74,13 @@ class LoginControle extends Controlador {
                         <i class="material-icons"><?= Util::$icones['Home'] ?></i>Vitrine</a>
                 </li>
 
-            <?php foreach ($permissoes as $index => $permissao) : ?>
+                <?php foreach ($permissoes as $index => $permissao) : ?>
 
                     <li class="bold ">
                         <a class="collapsible-header waves-effect blue-text">
                             <i class="material-icons"><?= Util::$icones[$index] ?></i><?= $index ?></a>
                         <ul class="collapsible-body">
-                <?php foreach ($permissao as $opcao) : ?>
+                            <?php foreach ($permissao as $opcao) : ?>
                                 <?php if ($opcao['mostrar'] == 1) : ?>
                                     <li><a href="<?= \App\Util\Util::getBaseURL() . strtolower(Util::tirarAcentos($index . "/" . $opcao['funcao'])) ?>"><?= str_replace("_", " ", $opcao['funcao']) ?></a></li>
                                 <?php endif; ?>
@@ -88,7 +88,7 @@ class LoginControle extends Controlador {
                         </ul>
                     </li>
 
-            <?php endforeach; ?>
+                <?php endforeach; ?>
 
                 <li class="bold ">
                     <form method="POST" action="<?= \App\Util\Util::getBaseURL() . 'login' ?>">
@@ -133,8 +133,12 @@ class LoginControle extends Controlador {
                         <div class="center">
                             <button class="btn waves-effect waves-light"  id="btLogar" name="logar" >Logar</button>
                         </div>
-                    </form>
 
+
+                    </form>
+                    <div class="center">
+                    <a href="visitante/cadastro">Cadastre-se</a>
+                    </div>
                 </li>
 
             </ul>

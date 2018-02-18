@@ -4,6 +4,8 @@ namespace App\Controladores;
 
 use Nucleo\Controlador;
 use Nucleo\EntidadeDAO;
+use App\Modelos\Usuario;
+use App\Modelos\VinculoUsuarioPermissao;
 use App\Modelos\Visitante;
 use App\Util\Util;
 
@@ -62,7 +64,7 @@ class VisitanteControle extends Controlador {
 
                     $visitante = $this->visitante;
                     $visitante->setUsuario($usuario);
-                    
+
                     $this->dao->mudarEntidade('visitante')->salvar($visitante);
 
                     $this->visitante = $this->dao->pesquisarOnde('id', $visitante->getId())[0];
@@ -74,34 +76,60 @@ class VisitanteControle extends Controlador {
                 break;
 
             case 'cadastro':
-            /* /Prepara visualização da página
-              $this->visao = 'form_visitante';
-              $this->dados['pagina'] = "Cadastro de Visitante";
-              $this->dados['acao'] = 'salvar';
-              $this->dados['disabled'] = '';
 
-              $this->dados['cursos'] = $this->cursoDAO->pesquisarPorNome('');
-              unset($this->dados['visitante']);
+                //Prepara visualização da página
+                $this->visao = 'form_visitante';
+                $this->dados['pagina'] = "Cadastro de Visitante";
+                $this->dados['acao'] = 'salvar';
+                $this->dados['disabled'] = '';
+                unset($this->dados['usuario']);
 
-              //Verifica se houve ação
-              if ($acao == 'salvar') {
-              $visitante = new Visitante();
+                //Verifica se houve ação
+                if ($acao == 'salvar') {
 
-              $id = array_shift($_POST['id']);
+                    $usuario = new Usuario();
 
-              $visitante->setId($id);
-              $visitante->setNome($_POST['nome']);
-              $visitante->setCPF($_POST['cpf']);
+                    $usuario->setId(0);
+                    $usuario->setNome($_POST['nome']);
+                    $pontos = array("-", ".");
+                    $cpf = str_replace($pontos, "", $_POST['cpf']);
 
-              $this->dao->salvar($visitante);
+                    $usuario->setCpf($cpf);
+                    $usuario->setSenha($_POST['senha']);
+                    $usuario->setTipoAcesso('visitante');
 
-              $this->visitante = $visitante;
+                    $usuariosComEsseCPF = $this->dao->mudarEntidade('usuario')->pesquisarOnde('cpf', $usuario->getCpf());
 
-              $this->redirecionar($this->caminhoAtual . '/visitantes/cadastro');
-              }
 
-              break;
-             */
+                    if (count($usuariosComEsseCPF) > 0) {
+                        $this->retornos[] = "CPF já está cadastrado. Informe um CPF diferente";
+                    } else {
+                        $usuario->setId($this->dao->mudarEntidade('usuario')->salvar($usuario));
+
+                        $this->usuario = $usuario;
+
+                        #----------------------Vinculando permissões--------------
+
+                        $daoPermissao = new EntidadeDAO(new VinculoUsuarioPermissao());
+
+                        $vinculo = new VinculoUsuarioPermissao();
+                        $vinculo->setUsuario($this->usuario->getId());
+                        $vinculo->setPermissao(serialize(array('Certificado.Pesquisa.1')));
+                        $daoPermissao->salvar($vinculo);
+
+                        $visitante = new Visitante();
+
+                        $visitante->setId(0);
+                        $visitante->setUsuario($usuario);
+
+                        $this->dao->mudarEntidade('visitante')->salvar($visitante);
+                        $this->retornos[] = "Visitante salvo com sucesso!";
+                        
+                    }
+                }
+
+                break;
+
             default:
                 $this->visao = 'pesquisa_visitante';
                 $this->dados['pagina'] = "Lista de Visitantes";
@@ -157,7 +185,7 @@ class VisitanteControle extends Controlador {
                         }
                     }
                     $this->dados['resultado'] = $visitantes;
-                }  else if(!isset ($_POST['nome'])) {
+                } else if (!isset($_POST['nome'])) {
                     $usuarios = $this->dao->mudarEntidade('usuario')->pesquisarLIVRE('order by id desc limit 50;', array());
                     $visitantes = [];
                     foreach ($usuarios as $usuario) {
@@ -166,7 +194,6 @@ class VisitanteControle extends Controlador {
                         }
                     }
                     $this->dados['resultado'] = $visitantes;
-                    
                 } else {
                     unset($this->dados['resultado']);
                 }
@@ -175,5 +202,3 @@ class VisitanteControle extends Controlador {
     }
 
 }
-
-
