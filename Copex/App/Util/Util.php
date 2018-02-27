@@ -33,6 +33,7 @@ class Util {
         'Certificado.Vinculados.0',
         'Certificado.Pesquisa_Por_Usuário.1',
         'Certificado.Vincular_Certificados.1',
+        'Configuração.Importação.1',
         'Curso.Cadastro.1',
         'Curso.Edição.0',
         'Curso.Pesquisa.1',
@@ -65,6 +66,7 @@ class Util {
     public static $icones = [
         "Aluno" => "account_box",
         "Certificado" => "chrome_reader_mode",
+        "Configuração" => "settings",
         "Curso" => "collections_bookmark",
         "Professor" => "account_box",
         "Projeto" => "extension",

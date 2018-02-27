@@ -56,7 +56,7 @@ class LoginControle extends Controlador {
             $permissoes = [];
             $permissoesUsuario = Login::getPermissoesUsuario();
 
-            for ($index = count($permissoesUsuario) - 1; $index >= 0; $index--) {
+            for ($index = 0 ; $index < count($permissoesUsuario); $index++) {//for ($index = count($permissoesUsuario) - 1; $index >= 0; $index--) {
                 $string = $permissoesUsuario[$index];
                 Util::criarArrayPermissao($permissoes, $string);
             }
@@ -71,7 +71,7 @@ class LoginControle extends Controlador {
 
                 <li class="bold ">
                     <a href="<?= \App\Util\Util::getBaseURL() . 'vitrine' ?>" class="collapsible-header waves-effect blue-text">
-                        <i class="material-icons"><?= Util::$icones['Home'] ?></i>Vitrine</a>
+                        <i class="material-icons"><?= Util::$icones['Home'] ?></i>Início</a>
                 </li>
 
                 <?php foreach ($permissoes as $index => $permissao) : ?>
