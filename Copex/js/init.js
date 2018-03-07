@@ -19,7 +19,7 @@ $('form').submit(function () {
 });
 
 // Alterna as marcações das permissões
-$('input[name!="permissoes[]"]').on('click', function () {
+$('checbox[name!="permissoes[]"]').on('click', function () {
     var _this = this;
     var checkboxes = $('input[name="permissoes[]"]');
 
@@ -29,7 +29,7 @@ $('input[name!="permissoes[]"]').on('click', function () {
         if (checkbox.value.includes(_this.value)) {
             checkbox.checked = _this.checked;
         }
-    }
+    }alert("chamou permissoe marcar todos");
 });
 
 

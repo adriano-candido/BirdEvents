@@ -4,7 +4,7 @@ namespace App\Controladores;
 
 use Nucleo\Controlador;
 use Nucleo\EntidadeDAO;
-use App\Modelos\Curso;
+use App\Modelos\VinculoUsuarioPermissao;
 use App\Modelos\Usuario;
 use App\Modelos\Aluno;
 use App\Modelos\Professor;
@@ -103,6 +103,9 @@ class ConfiguracaoControle extends Controlador {
                             }
                         }
                     }
+                    if(count($this->retornos) == 0){
+                        $this->retornos[] = "Importação realizada com sucesso!";
+                    }
                 }
                 break;
         }
@@ -121,6 +124,12 @@ class ConfiguracaoControle extends Controlador {
             } elseif ($usuarioCadastrado->getTipoAcesso() == "professor") {
                 $this->cadastrarProfessor($usuarioCadastrado, $dadosUsuario['titulacao']);
             }
+
+            $daoPermissao = new EntidadeDAO(new VinculoUsuarioPermissao());
+            $vinculo = new VinculoUsuarioPermissao();
+            $vinculo->setUsuario($usuarioCadastrado->getId());
+            $vinculo->setPermissao(serialize(array('Certificado.Pesquisa.1')));
+            $daoPermissao->salvar($vinculo);
         }
     }
 
