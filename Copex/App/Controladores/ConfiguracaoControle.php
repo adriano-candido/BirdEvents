@@ -103,7 +103,7 @@ class ConfiguracaoControle extends Controlador {
                             }
                         }
                     }
-                    if(count($this->retornos) == 0){
+                    if (count($this->retornos) == 0) {
                         $this->retornos[] = "Importação realizada com sucesso!";
                     }
                 }
@@ -119,16 +119,24 @@ class ConfiguracaoControle extends Controlador {
         } else {
             $usuarioCadastrado = $this->cadastrarUsuario($dadosUsuario['nome'], $cpf, $dadosUsuario['senha'], $dadosUsuario['tipoAcesso']);
 
+            $permissoes;
+
             if ($usuarioCadastrado->getTipoAcesso() == "aluno") {
                 $this->cadastrarAluno($usuarioCadastrado, $dadosUsuario['matricula'], $dadosUsuario['curso']);
+                $permissoes = array('Certificado.Pesquisa.1');
             } elseif ($usuarioCadastrado->getTipoAcesso() == "professor") {
                 $this->cadastrarProfessor($usuarioCadastrado, $dadosUsuario['titulacao']);
+                $permissoes = array('Certificado.Pesquisa.1',
+                    'Projeto.Cadastro.1',
+                    'Projeto.Edição.0',
+                    'Projeto.Pesquisa.1',
+                    'Projeto.Visualização.0');
             }
 
             $daoPermissao = new EntidadeDAO(new VinculoUsuarioPermissao());
             $vinculo = new VinculoUsuarioPermissao();
             $vinculo->setUsuario($usuarioCadastrado->getId());
-            $vinculo->setPermissao(serialize(array('Certificado.Pesquisa.1')));
+            $vinculo->setPermissao(serialize($permissoes));
             $daoPermissao->salvar($vinculo);
         }
     }

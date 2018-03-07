@@ -228,7 +228,7 @@ class ProjetoControle extends Controlador {
                                 mkdir($pasta, 0777, true);
                             }
 
-                            $arquivo = $pasta . $anexo->getNome();
+                            $arquivo = $pasta . Util::tirarAcentos($anexo->getNome());
 
                             move_uploaded_file($nomeTemp, $arquivo);
 
@@ -410,7 +410,7 @@ class ProjetoControle extends Controlador {
                                 mkdir($pasta, 0777, true);
                             }
 
-                            $arquivo = $pasta . $anexo->getNome();
+                            $arquivo = $pasta . Util::tirarAcentos($anexo->getNome());
 
 
                             if (($anexo->getNome() == "img_padrao.png")) {
