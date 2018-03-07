@@ -2,37 +2,7 @@
 
     <form method="POST" enctype="multipart/form-data">
 
-        <div class="row z-depth-1 ">
-            <div class="blue white-text center section">            
-                <h5> Certificados </h5>           
-            </div>
-            <div class="input-field col s8 offset-s1">
-                <input  id="inp_pesquisar" type="text" class="validate" name="nome_certificado">
-                <label for="inp_pesquisar">Pesquisar Certificados</label>
-            </div>
-            <button class="waves-effect btn-flat btn-large col s2" name="pesquisar_certificados"><i class="material-icons ">search</i></button>
-
-            <div class="col s12">
-                <ul class="collection" style="max-height: 200px; overflow-y: scroll">
-                    <?php if (isset($certificadosDisponiveis) && count($certificadosDisponiveis) > 0): foreach ($certificadosDisponiveis as $certificado): ?>
-                            <li class="collection-item">
-                                <input class="limited" type="radio" id="certificado-<?= $certificado->getId() ?>" value="<?= $certificado->getId() ?>" name="idCertificado"/>
-                                <label for="certificado-<?= $certificado->getId() ?>" ><?= $certificado->getNome() ?></label>
-                            </li>
-                            <?php
-                        endforeach;
-                    else:
-                        ?>
-                        <li class="collection-item">
-                            <span class="title"></span>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
         
-        <br>
-
         <div class="row z-depth-1 ">
             <div class="blue white-text center section ">            
                 <h5> Usuários </h5>           
@@ -63,6 +33,39 @@
                     <?php endif; ?>
                 </ul>
 
+            </div>
+        </div>
+        
+        
+        
+        <br>
+
+        <div class="row z-depth-1 ">
+            <div class="blue white-text center section">            
+                <h5> Certificados </h5>           
+            </div>
+            <div class="input-field col s8 offset-s1">
+                <input  id="inp_pesquisar" type="text" class="validate" name="nome_certificado">
+                <label for="inp_pesquisar">Pesquisar Certificados</label>
+            </div>
+            <button class="waves-effect btn-flat btn-large col s2" name="pesquisar_certificados"><i class="material-icons ">search</i></button>
+
+            <div class="col s12">
+                <ul class="collection" style="max-height: 200px; overflow-y: scroll">
+                    <?php if (isset($certificadosDisponiveis) && count($certificadosDisponiveis) > 0): foreach ($certificadosDisponiveis as $certificado): ?>
+                            <li class="collection-item">
+                                <input class="limited" type="radio" id="certificado-<?= $certificado->getId() ?>" value="<?= $certificado->getId() ?>" name="idCertificado"/>
+                                <label for="certificado-<?= $certificado->getId() ?>" ><?= $certificado->getNome() ?></label>
+                            </li>
+                            <?php
+                        endforeach;
+                    else:
+                        ?>
+                        <li class="collection-item">
+                            <span class="title"></span>
+                        </li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
 
