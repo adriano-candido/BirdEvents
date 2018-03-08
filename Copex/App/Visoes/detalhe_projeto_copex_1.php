@@ -240,7 +240,7 @@
                 <div id="modal" class="modal bottom-sheet ">
                     <div class="modal-content container">
                         <h3>Avaliar o Projeto</h3>
-                        <form method="POST" class="row">
+                        <form method="POST" enctype="multipart/form-data" class="row">
                             <div class="col s8" >
                                 <div class="row">
 
@@ -262,6 +262,17 @@
                                         <textarea id="textarea" class="materialize-textarea" name="observacao" required></textarea>
                                         <label for="textarea">Observação</label>
                                     </div>
+
+
+                                    <div class="file-field input-field col s12">
+                                        <div class="btn blue">
+                                            <span>Selecionar arquivo</span>
+                                            <input type="file" name="arquivo" required>
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text" placeholder="Selecione um arquivo" required>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -273,7 +284,6 @@
                                 <div class=" row">
                                     <a class="col s12 modal-action modal-close waves-effect blue-text white btn">Cancelar</a>
                                 </div>
-
                             </div>
                         </form>
                     </div>

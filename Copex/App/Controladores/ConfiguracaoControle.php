@@ -89,7 +89,7 @@ class ConfiguracaoControle extends Controlador {
                                                 $dadosUsuario['titulacao'] = $celula->nodeValue;
                                             } else
                                             if ($indexCelula == 4) {
-                                                $dadosUsuario['curso'] = $celula->nodeValue;
+                                                $dadosUsuario['curso'] = explode('-', $celula->nodeValue)[0];
                                             }
                                         }
 

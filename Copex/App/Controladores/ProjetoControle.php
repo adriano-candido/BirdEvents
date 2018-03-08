@@ -73,6 +73,64 @@ class ProjetoControle extends Controlador {
 
                     $this->projeto->setSituacao($_POST['situacao']);
                     $this->dao->salvar($this->projeto);
+
+                    #----------------Prepara Anexos-----------------------------
+
+                    $anexos = [];
+
+                    $documentosPermitidos = array(".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".pdf");
+                    $imagensPermitidas = array(".gif", ".jpeg", ".jpg", ".png", ".bmp");
+
+
+                    if (($_FILES['arquivo']['size'] > 0)) {
+                        $arquivo = $_FILES['arquivo'];
+                        $extensão = strtolower(substr($arquivo['name'], strripos($arquivo['name'], ".")));
+
+                        $tipo;
+                        $errosAoSalvar = false;
+                        
+                        if (in_array($extensão, $imagensPermitidas)) {
+                            $tipo = "/imagens/";
+                        } else if (in_array($extensão, $documentosPermitidos)) {
+                            $tipo = "/documentos/";
+                        } else {
+                            $this->retornos[] = $arquivo['name'] . " não é um arquivo válido!";
+                            $errosAoSalvar = true;
+                        }
+
+                        if ($errosAoSalvar == false) {
+                            $anexo = new \App\Modelos\Anexo();
+                            $anexo->setNome('(copex)'.$arquivo['name']);
+                            $anexo->setTipo($tipo);
+                            $anexo->setDataPostagem(date("Y-m-d"));
+
+                            $anexos[$arquivo['tmp_name']] = $anexo;
+
+                            #-------------------Salva anexos--------------------
+                            $dao = new EntidadeDAO(new \App\Modelos\Anexo());
+
+                            foreach ($anexos as $nomeTemp => $anexo) {
+                                $anexo->setProjeto($this->projeto);
+
+                                $pasta = 'uploads/projeto/' . md5($this->projeto->getId()) . $anexo->getTipo();
+
+                                if (!file_exists($pasta)) {
+                                    mkdir($pasta, 0777, true);
+                                }
+
+                                $arquivo = $pasta . Util::tirarAcentos($anexo->getNome());
+
+                                move_uploaded_file($nomeTemp, $arquivo);
+
+                                $anexo->setLocalizacao($arquivo);
+
+                                $dao->salvar($anexo);
+                            }
+                        }
+                    }
+
+
+                    #--------------------------------------------
                 }
 
                 $this->dados['anexos'] = (new EntidadeDAO(new \App\Modelos\Anexo()))->pesquisarOnde('projeto', $this->projeto->getId());
