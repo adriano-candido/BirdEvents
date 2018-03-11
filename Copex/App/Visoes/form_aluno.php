@@ -97,7 +97,7 @@
 
                 <?php endif; ?>
                 <div class="col s1 offset-s2 offset-l1">
-                    <a href="/aluno/pesquisa" class="waves-effect white blue-text btn">Cancelar</a>
+                    <a href="aluno/pesquisa" class="waves-effect white blue-text btn">Cancelar</a>
                 </div>
             </div>
         </form>

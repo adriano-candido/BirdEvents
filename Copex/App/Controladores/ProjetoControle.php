@@ -554,7 +554,7 @@ class ProjetoControle extends Controlador {
 
                 if (Login::checaPermissao("Projeto.Visualização_Geral")) {
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                        $this->dados['resultado'] = $this->dao->pesquisarPorNome($_POST['nome']);
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome order by situacao;", array("nome" => "%" . $_POST['nome'] . "%"));//pesquisarPorNome($_POST['nome']);
                     } else if (!isset($_POST['nome'])) {
                         $this->dados['resultado'] = $this->dao->pesquisarLIVRE('order by id desc limit 50 ;', array());
                     } else {
@@ -564,7 +564,7 @@ class ProjetoControle extends Controlador {
                     $idUsuarioLogado = Login::getUsuario()->getId();
 
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado'", array("nome" => "%" . $_POST['nome'] . "%"));
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado' order by situacao", array("nome" => "%" . $_POST['nome'] . "%"));
                     } else if (!isset($_POST['nome'])) {
                         $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE usuario ='$idUsuarioLogado' order by id desc limit 50 ;", array());
                     } else {

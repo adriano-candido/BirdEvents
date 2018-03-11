@@ -267,10 +267,10 @@
                                     <div class="file-field input-field col s12">
                                         <div class="btn blue">
                                             <span>Selecionar arquivo</span>
-                                            <input type="file" name="arquivo" required>
+                                            <input type="file" name="arquivo" >
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text" placeholder="Selecione um arquivo" required>
+                                            <input class="file-path validate" type="text" placeholder="Selecione um arquivo" >
                                         </div>
                                     </div>
                                 </div>

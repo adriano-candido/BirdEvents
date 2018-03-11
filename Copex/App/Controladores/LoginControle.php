@@ -56,10 +56,21 @@ class LoginControle extends Controlador {
             $permissoes = [];
             $permissoesUsuario = Login::getPermissoesUsuario();
 
-            for ($index = 0 ; $index < count($permissoesUsuario); $index++) {//for ($index = count($permissoesUsuario) - 1; $index >= 0; $index--) {
+            for ($index = 0 ; $index < count($permissoesUsuario); $index++) {
                 $string = $permissoesUsuario[$index];
                 Util::criarArrayPermissao($permissoes, $string);
             }
+            
+            #-----Ordenação-----
+            
+            uasort($permissoes, function ($permissao, $outraPermissao){
+                
+                $categoria = explode('.', $permissao[0]['string'])[0];
+                $outraCategoria = explode('.', $outraPermissao[0]['string'])[0];
+                return strcasecmp (Util::$icones[$categoria] , Util::$icones[$outraCategoria] );
+                }); 
+            
+            #-------------------
             ?> 
             <ul id="slide-out" class="collapsible side-nav" data-collapsible="accordion">
                 <li>

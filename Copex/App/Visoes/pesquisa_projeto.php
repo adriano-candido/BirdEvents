@@ -15,6 +15,7 @@
                     <li class="collection-item">
                         <input class="limited" type="checkbox" id="<?= $projeto->getId() ?>" value="<?= $projeto->getId() ?>" name="id[]"/>
                         <label for="<?= $projeto->getId() ?>" ><?= $projeto->getNome() ?></label>
+                        <div class="secondary-content">Situação : <strong ><?= $situacoes[$projeto->getSituacao()] ?></strong></div>                        
                     </li>
                     <?php
                 endforeach;
