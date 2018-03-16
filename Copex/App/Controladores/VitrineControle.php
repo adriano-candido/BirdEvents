@@ -21,7 +21,7 @@ class VitrineControle extends Controlador {
         $this->projetoDAO = new EntidadeDAO(new Anexo());
     }
 
-    public function processar($parametros) {
+    public function processar($parametros) {$this->layout = "";$this->visao = "certificado_digital";//"vitrine";
         $this->dados['pagina'] = "Seja bem vindo(a) à COPEX-FVS!";
 
         $acao = Util::get_post_action('sair');
