@@ -283,7 +283,7 @@
         <?php if (isset($permissoes) && count($permissoes) > 0): foreach ($permissoes as $index => $permissao) : ?>
                 <li>  
                     <div class="collapsible-header grey lighten-5 grey-text text-darken-4 ">
-                        <input class="limited" type="checkbox" id="<?= $index; ?>" value="<?= $index; ?>" <?= $disabled; ?> />
+                        <input class="limited" type="checkbox" name="grupoDePermissoes" id="<?= $index; ?>" value="<?= $index; ?>" <?= $disabled; ?> />
                         <label for="<?= $index; ?>" ><strong><?= $index ?></strong></label>
                     </div>
                     <div class="collapsible-body">

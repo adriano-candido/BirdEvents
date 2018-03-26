@@ -18,26 +18,26 @@
                         <label >CPF</label>
                     </div>
                     <div class="row">
-                                <div class="input-field col s6">
-                                    <i class="material-icons prefix">book</i>
-                                   <select name="titulacao" id="titulacao" <?= $disabled; ?>>
-                            <option value="" <?= $disabled ?> selected>Titulação</option>
-                            <?php if (isset($titulacoes) && count($titulacoes) > 0): foreach ($titulacoes as $titulacao): ?>
-                                    <?php if ($titulacao == $professor->getTitulacao()): ?>
-                                                    <option value="<?= $titulacao; ?>" selected><?= $titulacao; ?></option>
-                                                <?php else : ?>
-                                                    <option value="<?= $titulacao; ?>" ><?= $titulacao;?></option>
-                                                <?php
-                                                endif;
-                                endforeach;
-                            endif;
-                            ?>
-                        </select>
-                        <label >Titulação</label>
-                                </div>
-                            </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">book</i>
+                            <select name="titulacao" id="titulacao" <?= $disabled; ?>>
+                                <option value="" <?= $disabled ?> selected>Titulação</option>
+                                <?php if (isset($titulacoes) && count($titulacoes) > 0): foreach ($titulacoes as $titulacao): ?>
+                                        <?php if ($titulacao == $professor->getTitulacao()): ?>
+                                            <option value="<?= $titulacao; ?>" selected><?= $titulacao; ?></option>
+                                        <?php else : ?>
+                                            <option value="<?= $titulacao; ?>" ><?= $titulacao; ?></option>
+                                        <?php
+                                        endif;
+                                    endforeach;
+                                endif;
+                                ?>
+                            </select>
+                            <label >Titulação</label>
+                        </div>
+                    </div>
                 </div>
-            
+
                 <div class="row">
                     <div class="col s1">
                         <input type="hidden" name="id[]" value="<?= $professor->getId(); ?>">

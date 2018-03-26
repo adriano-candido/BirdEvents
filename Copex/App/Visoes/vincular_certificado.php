@@ -2,7 +2,7 @@
 
     <form method="POST" enctype="multipart/form-data">
 
-        
+
         <div class="row z-depth-1 ">
             <div class="blue white-text center section ">            
                 <h5> Usuários </h5>           
@@ -35,9 +35,9 @@
 
             </div>
         </div>
-        
-        
-        
+
+
+
         <br>
 
         <div class="row z-depth-1 ">
@@ -52,10 +52,16 @@
 
             <div class="col s12">
                 <ul class="collection" style="max-height: 200px; overflow-y: scroll">
-                    <?php if (isset($certificadosDisponiveis) && count($certificadosDisponiveis) > 0): foreach ($certificadosDisponiveis as $certificado): ?>
+                    <?php if (isset($certificadosDisponiveis) && count($certificadosDisponiveis) > 0): foreach ($certificadosDisponiveis as $index => $certificado): ?>
                             <li class="collection-item">
-                                <input class="limited" type="radio" id="certificado-<?= $certificado->getId() ?>" value="<?= $certificado->getId() ?>" name="idCertificado"/>
-                                <label for="certificado-<?= $certificado->getId() ?>" ><?= $certificado->getNome() ?></label>
+                                <input class="limited" type="radio" id="certificado-<?= $index ?>" value="<?= $index ?>" name="indexCertificado"/>
+                                <label for="certificado-<?= $index ?>" ><?= $certificado->getNome() ?></label>
+
+                                <?php if ($certificado instanceof App\Modelos\CertificadoDigital): ?>
+                                    <div class="secondary-content">
+                                        <strong ><i class="material-icons left">fingerprint</i>Digital</strong>
+                                    </div>
+                                <?php endif; ?>
                             </li>
                             <?php
                         endforeach;

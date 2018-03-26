@@ -44,9 +44,13 @@
                                             foreach ($certificados[$usuario->getId()] as $index => $certificado):
                                                 ?>
 
-                                                <li class="collection-item">
+                                                <li class="collection-item row">
+                                                    <div class="col s7">
                                                     <strong class="blue-text"><?= $certificado->getNome() ?></strong>
-                                                    <div class="switch secondary-content">
+                                                    </div>
+                                                    <?php if($certificado instanceof App\Modelos\Certificado): ?>
+                                                    <div class="switch secondary-content col s5">
+                                                        
                                                         <strong >Foi Entregue : </strong>
 
                                                         <label>
@@ -56,6 +60,12 @@
                                                             Sim
                                                         </label>
                                                     </div>
+                                                        <?php else: ?>
+                                                    <div class="secondary-content">
+                                                        <strong ><i class="material-icons left">fingerprint</i>Digital</strong>
+                                                    </div>
+                                                        <?php endif; ?>
+                                                    
                                                 </li>
 
                                             <?php endforeach; ?>

@@ -19,7 +19,7 @@ $('form').submit(function () {
 });
 
 // Alterna as marcações das permissões
-$('checbox[name!="permissoes[]"]').on('click', function () {
+$('input[name="grupoDePermissoes"]').on('click', function () {
     var _this = this;
     var checkboxes = $('input[name="permissoes[]"]');
 
@@ -29,13 +29,13 @@ $('checbox[name!="permissoes[]"]').on('click', function () {
         if (checkbox.value.includes(_this.value)) {
             checkbox.checked = _this.checked;
         }
-    }alert("chamou permissoe marcar todos");
+    }
 });
 
 
 $('input[name="permissoes[]"]').on('click', function () {
     var _this = this;
-    var checkboxes = $('input[name!="permissoes[]"]');
+    var checkboxes = $('input[name="grupoDePermissoes"]');
 
     for (var index = 0, tamanho = checkboxes.length; index < tamanho; index++) {
         var checkbox = checkboxes[index];
@@ -46,6 +46,18 @@ $('input[name="permissoes[]"]').on('click', function () {
             }
         }
     }
+});
+
+// Altera os campos do formulário do participante conforme o tipo de acesso
+$("input[name='tipoCertificado']").click(function () {
+    if (this.value === "digital") {
+        $("#blocoCertificadoFisico").hide(1000);
+        $("#blocoCertificadoDigital").show(1000);
+    } else if (this.value === "fisico") {
+        $("#blocoCertificadoDigital").hide(1000);
+        $("#blocoCertificadoFisico").show(1000);
+    }
+
 });
 
 // Altera os campos do formulário do participante conforme o tipo de acesso
@@ -80,6 +92,42 @@ function alternaTipoProjetos(tipoProjeto) {
         $("#blocosetor").show(1000);
     }
 }
+
+$("form[name='form_certificado']").submit(function () {
+    var tipoDeCertificado = $("input[name='tipoCertificado']").val();
+    if (tipoDeCertificado.length > 1) {
+        tipoDeCertificado = $("input[name='tipoCertificado']:checked").val();
+    }
+    var anoExercicio = $("select[name='anoExercicio'] option:selected").val();
+    var projeto = $("select[name='projeto'] option:selected").val();
+    var imagemSelecionada = $("input[name='imagem']").val();
+    var textoCertificado = $("textarea[name='texto']").val();
+    var imagemAtual = $("#imagemAtual").attr('src');
+
+
+    if (tipoDeCertificado == "fisico" && anoExercicio == "") {
+
+        Materialize.toast("Selecione um Ano de Exercício.", 4000);
+
+        return false;
+
+    } else if (tipoDeCertificado == "digital") {
+        if (projeto == "") {
+            Materialize.toast("Selecione um Projeto.", 4000);
+            return false;
+        }
+
+        if (textoCertificado == "") {
+            Materialize.toast("Informe um Texto para o certificado.", 4000);
+            return false;
+        }
+
+        if (imagemSelecionada == "" && imagemAtual == undefined) {
+            Materialize.toast("Selecione uma Imagem.", 4000);
+            return false;
+        }
+    }
+});
 
 $("form[name='form_projeto']").submit(function () {
     var tipoDeProjeto = $("input[name='tipoprojeto']:checked").val();
@@ -143,7 +191,7 @@ $('input:radio').on('change', checarVincular);
 
 function checarVincular() {
     var checkbox = $('input:checkbox:checked');
-    var radio = $('input:radio[name="idCertificado"]:checked');
+    var radio = $('input:radio[name="indexCertificado"]:checked');
 
     if (checkbox.length < 1 || radio.length < 1) {
         $('#vincular_certificado').attr('disabled', 'disabled');
