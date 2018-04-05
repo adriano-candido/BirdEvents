@@ -23,7 +23,12 @@
                                         ?>
 
                                         <span class="secondary-content">Situação: <span ><?= $vinculo->getSituacao() ?></span></span>
-                                        <?php
+                                        <?php else:
+                                        ?>
+                                        <div class="secondary-content">
+                                            <strong><a target="_blank" title="Imprimir" href="certificado/pesquisa/impressao/<?= $index ?>"><i class="material-icons right">print</i></a></strong>
+                                        </div>
+                                    <?php
                                     endif;
                                 endif;
                             endforeach;
@@ -33,8 +38,8 @@
                             <div class="secondary-content">
                                 <strong><i class="material-icons left">fingerprint</i>Digital</strong>
                             </div>
-                    <?php endif;
-                    ?>
+                        <?php endif;
+                        ?>
                     </li>
                     <?php
                 endforeach;
@@ -43,29 +48,29 @@
                 <li class="collection-item">
                     <span class="title"></span>
                 </li>
-        <?php endif; ?>
+            <?php endif; ?>
         </ul>
 
         <?php if (\App\Modelos\Login::checaPermissao("Certificado.Visualização")): ?>
             <button id="visualizar" class="btn waves-effect waves-light" type="submit" name="visualizar" title="Visualizar" disabled="">
                 <i class="material-icons">visibility</i>
             </button>
-<?php endif; ?>
+        <?php endif; ?>
         <?php if (\App\Modelos\Login::checaPermissao("Certificado.Edição")): ?>
             <button id="editar" class="btn waves-effect waves-light" type="submit" name="editar" title="Editar" disabled="">
                 <i class="material-icons">edit</i>
             </button>
-<?php endif; ?>
+        <?php endif; ?>
         <?php if (\App\Modelos\Login::checaPermissao("Certificado.Vinculados")): ?>
             <button id="vinculados" class="btn waves-effect waves-light" type="submit" name="vinculados" title="Usuarios Vinculados" disabled="">
                 <i class="material-icons">account_circle</i>
             </button>
-    <?php endif; ?>
+        <?php endif; ?>
     </form> 
 
     <?php if (\App\Modelos\Login::checaPermissao("Certificado.Cadastro")): ?>
         <div class="fixed-action-btn">
             <a href="certificado/cadastro" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
         </div>
-<?php endif; ?>
+    <?php endif; ?>
 </main>

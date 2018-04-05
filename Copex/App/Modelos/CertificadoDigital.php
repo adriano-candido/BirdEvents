@@ -10,7 +10,6 @@ class CertificadoDigital extends Entidade {
     private $nome;
     private $texto;
     private $imagem;
-    private $projeto;
 
     public function getId() {
         return $this->id;
@@ -44,14 +43,6 @@ class CertificadoDigital extends Entidade {
         $this->imagem = $imagem;
     }
     
-    public function getProjeto() {
-        return $this->projeto;
-    }
-
-    public function setProjeto($projeto) {
-        $this->projeto = $projeto;
-    }
-
     public function get($atributo) {
         return $this->$atributo;
     }

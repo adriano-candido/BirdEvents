@@ -62,7 +62,7 @@
                                                     </div>
                                                         <?php else: ?>
                                                     <div class="secondary-content">
-                                                        <strong ><i class="material-icons left">fingerprint</i>Digital</strong>
+                                                        <strong><i class="material-icons left">fingerprint</i>Digital<a target="_blank" title="Imprimir" href="certificado/pesquisa_por_usuario/impressao/<?= "u".$usuario->getId()."i".$index ?>"><i class="material-icons right">print</i></a></strong>
                                                     </div>
                                                         <?php endif; ?>
                                                     

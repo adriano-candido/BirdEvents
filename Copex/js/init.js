@@ -99,7 +99,6 @@ $("form[name='form_certificado']").submit(function () {
         tipoDeCertificado = $("input[name='tipoCertificado']:checked").val();
     }
     var anoExercicio = $("select[name='anoExercicio'] option:selected").val();
-    var projeto = $("select[name='projeto'] option:selected").val();
     var imagemSelecionada = $("input[name='imagem']").val();
     var textoCertificado = $("textarea[name='texto']").val();
     var imagemAtual = $("#imagemAtual").attr('src');
@@ -112,11 +111,7 @@ $("form[name='form_certificado']").submit(function () {
         return false;
 
     } else if (tipoDeCertificado == "digital") {
-        if (projeto == "") {
-            Materialize.toast("Selecione um Projeto.", 4000);
-            return false;
-        }
-
+        
         if (textoCertificado == "") {
             Materialize.toast("Informe um Texto para o certificado.", 4000);
             return false;

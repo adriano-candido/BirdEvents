@@ -28,7 +28,6 @@ class CertificadoControle extends Controlador {
                         'visualizar', 'editar', 'salvar', 'excluir', 'vincular', 'desvincular', 'vinculados', 'entregar', 'pesquisar_certificados', 'pesquisar_usuarios', 'pesquisar_por_usuario', 'gerar'
         );
 
-        $projetos = (new EntidadeDAO(new \App\Modelos\Projeto()))->pesquisarPorNome("");
 
         $usuario = new \App\Modelos\Usuario();
         $usuario->setNome('José');
@@ -36,8 +35,7 @@ class CertificadoControle extends Controlador {
 
         $this->marcacoes = [
             'usuario@nome' => '',
-            'usuario@tipoAcesso' => '',
-            'projeto@nome' => ''
+            'usuario@tipoAcesso' => ''
         ];
 
         //Colhe a pagina que deve ser apresentada
@@ -51,7 +49,6 @@ class CertificadoControle extends Controlador {
                 $this->visao = 'form_certificado';
                 $this->dados['pagina'] = "Visualização de Certificado";
                 $this->dados['certificado'] = $this->certificado;
-                $this->dados['projetos'] = $projetos;                
                 $this->dados['marcacoes'] = $this->marcacoes;
                 $this->dados['acao'] = 'editar';
                 $this->dados['disabled'] = 'disabled';
@@ -61,11 +58,8 @@ class CertificadoControle extends Controlador {
                     $this->redirecionar('certificado/edicao');
                 } else if ($acao == 'gerar') {
                     $this->gerarCertificado(
-                            $this->certificado->getTexto(), 
-                            $this->certificado->getImagem(), 
-                            (new EntidadeDAO(new \App\Modelos\Projeto()))->pesquisarPorId($this->certificado->getProjeto()), 
-                            $usuario
-                            );
+                            $this->certificado->getTexto(), $this->certificado->getImagem(), $usuario
+                    );
                 }
 
                 break;
@@ -75,7 +69,6 @@ class CertificadoControle extends Controlador {
                 $this->visao = 'form_certificado';
                 $this->dados['pagina'] = "Edição de Certificado";
                 $this->dados['certificado'] = $this->certificado;
-                $this->dados['projetos'] = $projetos;
                 $this->dados['marcacoes'] = $this->marcacoes;
                 $this->dados['acao'] = 'salvar';
                 $this->dados['disabled'] = '';
@@ -96,7 +89,6 @@ class CertificadoControle extends Controlador {
                         $certificado->setId($this->certificado->getId());
                         $certificado->setNome($_POST['nome']);
                         $certificado->setTexto($_POST['texto']);
-                        $certificado->setProjeto($_POST['projeto']);
                         if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
                             $imagem = fopen($_FILES['imagem']['tmp_name'], "r");
                             $tamanho = filesize($_FILES['imagem']['tmp_name']);
@@ -128,11 +120,8 @@ class CertificadoControle extends Controlador {
                     }
 
                     $this->gerarCertificado(
-                            $texto, 
-                            $imagemCodificada, 
-                            (new EntidadeDAO(new \App\Modelos\Projeto()))->pesquisarPorId($_POST['projeto']), 
-                            $usuario
-                            );
+                            $texto, $imagemCodificada, $usuario
+                    );
                 }
 
                 break;
@@ -141,7 +130,6 @@ class CertificadoControle extends Controlador {
                 //Prepara visualização da página
                 $this->visao = 'form_certificado';
                 $this->dados['pagina'] = "Cadastro de Certificado";
-                $this->dados['projetos'] = $projetos;                
                 $this->dados['marcacoes'] = $this->marcacoes;
                 $this->dados['acao'] = 'salvar';
                 $this->dados['disabled'] = '';
@@ -164,7 +152,6 @@ class CertificadoControle extends Controlador {
                         $certificado->setId(0);
                         $certificado->setNome($_POST['nome']);
                         $certificado->setTexto($_POST['texto']);
-                        $certificado->setProjeto($_POST['projeto']);
                         if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
                             $imagem = fopen($_FILES['imagem']['tmp_name'], "r");
                             $tamanho = filesize($_FILES['imagem']['tmp_name']);
@@ -197,18 +184,15 @@ class CertificadoControle extends Controlador {
 
 
                     $this->gerarCertificado(
-                            $texto, 
-                            $imagemCodificada, 
-                            (new EntidadeDAO(new \App\Modelos\Projeto()))->pesquisarPorId($_POST['projeto']), 
-                            $usuario
-                            );
+                            $texto, $imagemCodificada, $usuario
+                    );
                 }
                 break;
 
             case 'pesquisa_por_usuario':
                 $this->visao = 'pesquisa_certificado_por_usuario';
                 $this->dados['pagina'] = "Lista de Certificados por Usuario";
-                $this->pesquisar($acao);
+                $this->pesquisar('pesquisar_por_usuario');
 
                 break;
 
@@ -520,6 +504,20 @@ class CertificadoControle extends Controlador {
                 break;
 
             case 'pesquisar_por_usuario':
+                
+                if (isset($_GET['url']) && isset(explode('/', $_GET['url'])[3])) {
+                    $codigo = explode('/', $_GET['url'])[3];
+                    $usuario = substr($codigo, 1, strpos($codigo, 'i') - 1);
+                    $index = substr($codigo,strpos($codigo, 'i') + 1);
+                    if ($this->dados['certificados'][$usuario][$index] instanceof CertificadoDigital) {
+                        $certificado = $this->dados['certificados'][$usuario][$index];
+                        $this->gerarCertificado(
+                                $certificado->getTexto(), 
+                                $certificado->getImagem(), 
+                                (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarPorId($usuario)
+                            );
+                    }
+                }
 
                 $d = new EntidadeDAO(new \App\Modelos\Usuario());
                 if (isset($_POST['nome']) && $_POST['nome'] !== '') {
@@ -564,8 +562,8 @@ class CertificadoControle extends Controlador {
                                 $certificados = $d->pesquisarIN('id', $idCertificados);
                                 unset($idCertificados);
 
-                                $this->dados['certificados'][$usuario->getId()] = array_merge($certificados, $this->dados['certificados'][$usuario->getId()]);
-                                $this->dados['vinculos'][$usuario->getId()] = array_merge($vinculosDigitais, $this->dados['vinculos'][$usuario->getId()]);
+                                $this->dados['certificados'][$usuario->getId()] = isset($this->dados['certificados'][$usuario->getId()]) ? array_merge($certificados, $this->dados['certificados'][$usuario->getId()]) : $certificados;
+                                $this->dados['vinculos'][$usuario->getId()] = isset($this->dados['vinculos'][$usuario->getId()]) ? array_merge($vinculosDigitais, $this->dados['vinculos'][$usuario->getId()]) : $vinculosDigitais;
                             }
                         }
                     } else {
@@ -620,6 +618,14 @@ class CertificadoControle extends Controlador {
                 break;
 
             default:
+
+                if (isset($_GET['url']) && isset(explode('/', $_GET['url'])[3])) {
+                    $index = explode('/', $_GET['url'])[3];
+                    if ($this->dados['resultado'][$index] instanceof CertificadoDigital) {
+                        $certificado = $this->dados['resultado'][$index];
+                        $this->gerarCertificado($certificado->getTexto(), $certificado->getImagem(), Login::getUsuario());
+                    }
+                }
 
                 if (Login::checaPermissao("Certificado.Visualização_Geral")) {
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
@@ -698,15 +704,14 @@ class CertificadoControle extends Controlador {
         }
     }
 
-    private function gerarCertificado($texto, $imagemCodificada, $projeto, $usuario) {
+    private function gerarCertificado($texto, $imagemCodificada, $usuario) {
         $marcacoes = [
             'usuario@nome' => $usuario->getNome(),
-            'usuario@tipoAcesso' => $usuario->getTipoAcesso(),
-            'projeto@nome' => $projeto->getNome()
+            'usuario@tipoAcesso' => $usuario->getTipoAcesso()
         ];
-        
+
         $texto = $this->transformarTexto($texto, $marcacoes);
-        
+
         $html = <<<HTML
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -769,18 +774,18 @@ HTML;
 
 // Output the generated PDF to Browser
         $dom->stream(
-                "saida", // Nome do arquivo de saída
+                "certificado", // Nome do arquivo de saída
                 array(
             "Attachment" => false // Para download, altere para true 
                 )
         );
     }
-    
+
     private function transformarTexto($texto, $marcacoes) {
-    foreach ($marcacoes as $chave => $valor) {
-        $texto = str_replace($chave, $valor, $texto);
+        foreach ($marcacoes as $chave => $valor) {
+            $texto = str_replace($chave, $valor, $texto);
+        }
+        return $texto;
     }
-    return $texto;
-}
 
 }
