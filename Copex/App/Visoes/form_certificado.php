@@ -1,4 +1,6 @@
 <main class="container">
+    <link href="https://fonts.googleapis.com/css?family=Dosis|Lora|PT+Sans|Jua" rel="stylesheet">
+    <script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
     <div class="row">
         <form class="col s12" method="POST" name="form_certificado" enctype="multipart/form-data">
             <div class="row">
@@ -64,15 +66,11 @@
 
 
                     <div class="input-field col s12">
-                        <i class="material-icons prefix">text_fields
-                            <a class="btn-block tooltipped" data-html="true" data-position="bottom" data-delay="50" data-tooltip="
-                               <strong>Marcações Disponíveis :</strong> <br><br>
-                               <?php foreach ($marcacoes as $marcacao => $valor) : ?>
-                                   <?= $marcacao ?> <br><br> 
-                               <?php endforeach; ?>">
-                                <i class="material-icons right">info</i>
-                            </a>
-                        </i>
+                        <i class="material-icons prefix btn-block tooltipped" data-html="true" data-position="bottom" data-delay="50" data-tooltip="
+                       <strong>Marcações Disponíveis :</strong> <br><br>
+                       <?php foreach ($marcacoes as $marcacao => $valor) : ?>
+                           <?= $marcacao ?> <br><br> 
+                       <?php endforeach; ?>">text_fields <br> info</i>
                         <textarea id="textarea" class="materialize-textarea" name="texto" placeholder="Ex.: Certifico que o usuario@nome participou do ADMTEC " <?= $disabled; ?>><?= $certificado->getTexto(); ?></textarea>
                         <label for="textarea">Informe um texto para o certificado.</label>
                     </div>
@@ -156,20 +154,19 @@
 
         <div class="section" id="blocoCertificadoDigital" style="display: ">
             <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">text_fields
-                        <a class="btn-block tooltipped" data-html="true" data-position="bottom" data-delay="50" data-tooltip="
-                           <strong>Marcações Disponíveis :</strong> <br><br>
-                           <?php foreach ($marcacoes as $marcacao => $valor) : ?>
-                               <?= $marcacao ?> <br><br> 
-                           <?php endforeach; ?>">
-                            <i class="material-icons right">info</i>
-                        </a>
-                    </i>
+                <div class=" col s12 input-field">
+                    <i class="material-icons prefix btn-block tooltipped" data-html="true" data-position="bottom" data-delay="50" data-tooltip="
+                       <strong>Marcações Disponíveis :</strong> <br><br>
+                       <?php foreach ($marcacoes as $marcacao => $valor) : ?>
+                           <?= $marcacao ?> <br><br> 
+                       <?php endforeach; ?>">text_fields <br> info</i>
                     <textarea id="textarea" class="materialize-textarea" name="texto" placeholder="Ex.: Certifico que o usuario@nome participou do ADMTEC " ></textarea>
                     <label for="textarea">Informe um texto para o certificado.</label>
                 </div>
             </div>
+
+
+            
 
             <div class="section ">
                 <h6><strong>Fundo do Certificado</strong></h6>
@@ -206,27 +203,27 @@
             </div>
 
 
-    <?php
-    $anos = [];
-    $anoInicial = 2010;
-    for ($i = 0; $i < 21; $i++) {
-        $anos[] = $anoInicial . ".1";
-        $anos[] = $anoInicial . ".2";
-        $anoInicial++;
-    }
-    ?>
+            <?php
+            $anos = [];
+            $anoInicial = 2010;
+            for ($i = 0; $i < 21; $i++) {
+                $anos[] = $anoInicial . ".1";
+                $anos[] = $anoInicial . ".2";
+                $anoInicial++;
+            }
+            ?>
 
             <div class="input-field col s6">
                 <i class="material-icons prefix">event</i>
                 <select name="anoExercicio" <?= $disabled; ?>>
                     <option value="" disabled selected>Ano de Exercício</option>
-    <?php foreach ($anos as $ano): ?>
+                    <?php foreach ($anos as $ano): ?>
 
                         <option value="<?= $ano; ?>" ><?= $ano; ?></option>
 
-        <?php
-    endforeach;
-    ?>
+                        <?php
+                    endforeach;
+                    ?>
                 </select>
                 <label for="anoExercicio">Ano de Exercício</label>
             </div>
@@ -238,12 +235,65 @@
                 <button class="waves-effect blue btn" name="salvar" type="submit">salvar</button>
             </div>
 
-<?php endif; ?>
+        <?php endif; ?>
         <div class="col s1 offset-s2 offset-l1">
             <a href="certificado/pesquisa" class="waves-effect white blue-text btn">Cancelar</a>
         </div>
     </div>
 </form>
 </div>
+<?php if($disabled == ""): ?>
+    
+<script type="text/javascript">
 
+
+                /* START CONFIG */
+                var nicSelectOptions = {
+                    buttons: {
+                        'fontFamily-': {name: __('Select Font Family'), type: 'nicEditorFontFamilySelect', command: 'fontname'}
+                    }/* NICEDIT_REMOVE_START */
+                    , iconFiles: {'arrow': 'src/nicSelect/icons/arrow.gif'}/* NICEDIT_REMOVE_END */
+                };
+                /* END CONFIG */
+
+
+                var nicEditorFontFamilySelect = nicEditorSelect.extend({
+                    sel: {'roboto': 'Roboto',
+                        'times new roman': 'Times',
+                        'PT Sans': 'PT Sans',
+                        'Lora': 'Lora',
+                        'Jua': 'Jua',
+                        'Dosis': 'Dosis',
+                    },
+                    init: function () {
+                        this.setDisplay('Font&nbsp;Family...');
+                        for (itm in this.sel) {
+                            this.add(itm, '<font face="' + itm + '">' + this.sel[itm] + '</font>');
+                        }
+                    }
+                });
+
+                nicEditors.registerPlugin(nicPlugin, nicSelectOptions);
+
+                bkLib.onDomLoaded(function () {
+                    new nicEditor({buttonList: ['fontSize', 'fontFamily-', 'fontFormat',
+                            'removeformat', 'bold', 'italic', 'underline',
+                            'left', 'center', 'right', 'justify',
+                            'forecolor']}).panelInstance('textarea');
+
+                    $('.nicEdit-panelContain').parent().css({'margin-left': '5%', 'margin-top': '2%', 'width': '95%'});
+                    $('.nicEdit-panelContain').parent().next().css({'margin-left': '5%','margin-bottom': '2%', 'width': '95%'});
+                    $('.nicEdit-main').css({'width': '95%'});
+
+                });
+
+                $(window).resize(function () {
+
+                    $('.nicEdit-panelContain').parent().css({'width': '95%'});
+                    $('.nicEdit-panelContain').parent().next().css({'width': '95%'});
+                    $('.nicEdit-main').css({'width': '95%'});
+                });
+
+            </script>
+<?php endif; ?>
 </main>

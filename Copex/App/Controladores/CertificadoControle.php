@@ -192,7 +192,7 @@ class CertificadoControle extends Controlador {
             case 'pesquisa_por_usuario':
                 $this->visao = 'pesquisa_certificado_por_usuario';
                 $this->dados['pagina'] = "Lista de Certificados por Usuario";
-                $this->pesquisar('pesquisar_por_usuario');
+                $this->pesquisar($acao);
 
                 break;
 
@@ -720,6 +720,7 @@ class CertificadoControle extends Controlador {
             
         <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Dosis|Lora|PT+Sans|Jua" rel="stylesheet">
             
         <style>
         * {
@@ -734,26 +735,21 @@ class CertificadoControle extends Controlador {
         }
         #caixa_texto{
             position: absolute; 
-            top: 50%;            
+            //top: 50%;            
             padding-left: 50px; 
-            padding-rigth: 50px;
+            padding-rigth: 150px;
             
         }
-                h3 {
-position: relative;
-top: -50%;
-}
+               
         
         </style>
         
     </head>
     <body>
-        <div id="caixa" class="white">    
+        <div id="caixa">    
             
             <div id="caixa_texto">
-                <b><h3 class="center-align" style=" font-family: 'Roboto Slab', serif;">
-                    $texto
-                </h3></b>                
+                $texto                               
             </div>
            <img src="data:image/jpg;base64, $imagemCodificada" width="100%" height="100%">
         </div>

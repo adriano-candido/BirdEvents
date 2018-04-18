@@ -100,6 +100,9 @@ $("form[name='form_certificado']").submit(function () {
     }
     var anoExercicio = $("select[name='anoExercicio'] option:selected").val();
     var imagemSelecionada = $("input[name='imagem']").val();
+    
+    $("textarea[name='texto']").val((nicEditors.findEditor('textarea')).getContent());
+
     var textoCertificado = $("textarea[name='texto']").val();
     var imagemAtual = $("#imagemAtual").attr('src');
 

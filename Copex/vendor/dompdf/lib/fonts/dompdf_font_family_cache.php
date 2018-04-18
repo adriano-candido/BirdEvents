@@ -89,4 +89,16 @@
   'roboto slab' => array(
     'normal' => $fontDir . '\c75e88bb904d681e4dba4426637f9e60',
   ),
+  'indie flower' => array(
+    'normal' => $fontDir . '\918ad8a26813fb57b59510abb72b61a3',
+  ),
+  'dosis' => array(
+    'normal' => $fontDir . '\a22acfcb60fa143131a23927d099624d',
+  ),
+  'jua' => array(
+    'normal' => $fontDir . '\e18178b77ebc33b87a9314a3d901ea28',
+  ),
+  'pt sans' => array(
+    'normal' => $fontDir . '\f876b6b4131617bdc3952ad0d969776f',
+  ),
 ) ?>
