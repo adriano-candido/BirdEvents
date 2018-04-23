@@ -192,7 +192,98 @@ class CertificadoControle extends Controlador {
             case 'pesquisa_por_usuario':
                 $this->visao = 'pesquisa_certificado_por_usuario';
                 $this->dados['pagina'] = "Lista de Certificados por Usuario";
-                $this->pesquisar($acao);
+                //$this->pesquisar($acao);
+
+                if (isset($_GET['url']) && isset(explode('/', $_GET['url'])[3])) {
+                    $codigo = explode('/', $_GET['url'])[3];
+                    $usuario = substr($codigo, 1, strpos($codigo, 'i') - 1);
+                    $index = substr($codigo, strpos($codigo, 'i') + 1);
+                    if ($this->dados['certificados'][$usuario][$index] instanceof CertificadoDigital) {
+                        $certificado = $this->dados['certificados'][$usuario][$index];
+                        $this->gerarCertificado(
+                                $certificado->getTexto(), $certificado->getImagem(), (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarPorId($usuario)
+                        );
+                    }
+                }
+
+                
+                if ($acao == "entregar") {
+
+
+                    $d = new EntidadeDAO(new VinculoCertificadoUsuario());
+
+                    $vinculosDoUsuario = $d->pesquisarOnde('usuario', $_POST['idUsuario']);
+
+                    $entregues = isset($_POST['entregues']) ? $_POST['entregues'] : [];
+
+                    foreach ($vinculosDoUsuario as $vinculo) {
+
+                        if (in_array($vinculo->getId(), $entregues)) {
+                            $vinculo->setSituacao('Entregue');
+                        } else {
+                            $vinculo->setSituacao('Não Entregue');
+                        }
+                        $d->salvar($vinculo);
+                    }
+
+                    $usuario = $d->mudarEntidade('usuario')->pesquisarPorId($_POST['idUsuario']);
+                    $_POST['nome'] = $usuario->getNome();
+                }
+                
+                $d = new EntidadeDAO(new \App\Modelos\Usuario());
+                if (isset($_POST['nome']) && $_POST['nome'] !== '') {
+                    $usuarios = $d->pesquisarPorNome($_POST['nome']);
+
+                    unset($this->dados['certificados']);
+                    unset($this->dados['vinculos']);
+
+                    if (count($usuarios) > 0) {
+
+                        $this->dados['usuarios'] = $usuarios;
+
+                        $idCertificados = [];
+
+
+                        foreach ($usuarios as $usuario) {
+                            $d->mudarEntidade('vinculocertificadousuario');
+                            $vinculos = $d->pesquisarOnde('usuario', $usuario->getId());
+
+                            if (count($vinculos) > 0) {
+                                foreach ($vinculos as $vinculo) {
+                                    $idCertificados[] = $vinculo->getCertificado();
+                                }
+
+                                $d->mudarEntidade('certificado');
+                                $certificados = $d->pesquisarIN('id', $idCertificados);
+                                unset($idCertificados);
+
+                                $this->dados['certificados'][$usuario->getId()] = $certificados;
+                                $this->dados['vinculos'][$usuario->getId()] = $vinculos;
+                            }
+
+                            $d->mudarEntidade('vinculocertificadodigitalusuario');
+                            $vinculosDigitais = $d->pesquisarOnde('usuario', $usuario->getId());
+
+                            if (count($vinculosDigitais) > 0) {
+                                foreach ($vinculosDigitais as $vinculo) {
+                                    $idCertificados[] = $vinculo->getCertificado();
+                                }
+
+                                $d->mudarEntidade('certificadodigital');
+                                $certificados = $d->pesquisarIN('id', $idCertificados);
+                                unset($idCertificados);
+
+                                $this->dados['certificados'][$usuario->getId()] = isset($this->dados['certificados'][$usuario->getId()]) ? array_merge($certificados, $this->dados['certificados'][$usuario->getId()]) : $certificados;
+                                $this->dados['vinculos'][$usuario->getId()] = isset($this->dados['vinculos'][$usuario->getId()]) ? array_merge($vinculosDigitais, $this->dados['vinculos'][$usuario->getId()]) : $vinculosDigitais;
+                            }
+                        }
+                    } else {
+                        unset($this->dados['usuarios']);
+                    }
+                } else {
+                    unset($this->dados['usuarios']);
+                }
+
 
                 break;
 
@@ -400,7 +491,6 @@ class CertificadoControle extends Controlador {
             case 'vinculados':
                 //Prepara visualização da página
 
-
                 $this->visao = 'usuarios_vinculados';
                 $this->dados['pagina'] = $this->certificado->getNome();
                 $this->dados['certificado'] = $this->certificado;
@@ -502,103 +592,7 @@ class CertificadoControle extends Controlador {
                 $this->retornos[] = "Certificado excluído com sucesso!";
 
                 break;
-
-            case 'pesquisar_por_usuario':
-                
-                if (isset($_GET['url']) && isset(explode('/', $_GET['url'])[3])) {
-                    $codigo = explode('/', $_GET['url'])[3];
-                    $usuario = substr($codigo, 1, strpos($codigo, 'i') - 1);
-                    $index = substr($codigo,strpos($codigo, 'i') + 1);
-                    if ($this->dados['certificados'][$usuario][$index] instanceof CertificadoDigital) {
-                        $certificado = $this->dados['certificados'][$usuario][$index];
-                        $this->gerarCertificado(
-                                $certificado->getTexto(), 
-                                $certificado->getImagem(), 
-                                (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarPorId($usuario)
-                            );
-                    }
-                }
-
-                $d = new EntidadeDAO(new \App\Modelos\Usuario());
-                if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                    $usuarios = $d->pesquisarPorNome($_POST['nome']);
-
-                    unset($this->dados['certificados']);
-                    unset($this->dados['vinculos']);
-
-                    if (count($usuarios) > 0) {
-
-                        $this->dados['usuarios'] = $usuarios;
-
-                        $idCertificados = [];
-
-
-                        foreach ($usuarios as $usuario) {
-                            $d->mudarEntidade('vinculocertificadousuario');
-                            $vinculos = $d->pesquisarOnde('usuario', $usuario->getId());
-
-                            if (count($vinculos) > 0) {
-                                foreach ($vinculos as $vinculo) {
-                                    $idCertificados[] = $vinculo->getCertificado();
-                                }
-
-                                $d->mudarEntidade('certificado');
-                                $certificados = $d->pesquisarIN('id', $idCertificados);
-                                unset($idCertificados);
-
-                                $this->dados['certificados'][$usuario->getId()] = $certificados;
-                                $this->dados['vinculos'][$usuario->getId()] = $vinculos;
-                            }
-
-                            $d->mudarEntidade('vinculocertificadodigitalusuario');
-                            $vinculosDigitais = $d->pesquisarOnde('usuario', $usuario->getId());
-
-                            if (count($vinculosDigitais) > 0) {
-                                foreach ($vinculosDigitais as $vinculo) {
-                                    $idCertificados[] = $vinculo->getCertificado();
-                                }
-
-                                $d->mudarEntidade('certificadodigital');
-                                $certificados = $d->pesquisarIN('id', $idCertificados);
-                                unset($idCertificados);
-
-                                $this->dados['certificados'][$usuario->getId()] = isset($this->dados['certificados'][$usuario->getId()]) ? array_merge($certificados, $this->dados['certificados'][$usuario->getId()]) : $certificados;
-                                $this->dados['vinculos'][$usuario->getId()] = isset($this->dados['vinculos'][$usuario->getId()]) ? array_merge($vinculosDigitais, $this->dados['vinculos'][$usuario->getId()]) : $vinculosDigitais;
-                            }
-                        }
-                    } else {
-                        unset($this->dados['usuarios']);
-                    }
-                } else {
-                    unset($this->dados['usuarios']);
-                }
-
-                break;
-
-            case 'entregar':
-
-                $d = new EntidadeDAO(new VinculoCertificadoUsuario());
-
-                $vinculosDoUsuario = $d->pesquisarOnde('usuario', $_POST['idUsuario']);
-
-                $entregues = isset($_POST['entregues']) ? $_POST['entregues'] : [];
-
-                foreach ($vinculosDoUsuario as $vinculo) {
-
-                    if (in_array($vinculo->getId(), $entregues)) {
-                        $vinculo->setSituacao('Entregue');
-                    } else {
-                        $vinculo->setSituacao('Não Entregue');
-                    }
-                    $d->salvar($vinculo);
-                }
-
-                $usuario = $d->mudarEntidade('usuario')->pesquisarPorId($_POST['idUsuario']);
-                $_POST['nome'] = $usuario->getNome();
-                $this->pesquisar('pesquisar_por_usuario');
-
-                break;
-
+           
             case 'vinculados':
                 if (isset($_POST['index']) && $_POST['index'] !== '') {
                     $index = array_shift($_POST['index']);
