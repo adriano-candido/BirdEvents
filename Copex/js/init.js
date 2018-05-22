@@ -107,13 +107,15 @@ $("form[name='form_certificado']").submit(function () {
     var imagemAtual = $("#imagemAtual").attr('src');
 
 
-    if (tipoDeCertificado == "fisico" && anoExercicio == "") {
+    if (anoExercicio == "") {
 
         Materialize.toast("Selecione um Ano de Exercício.", 4000);
 
         return false;
 
-    } else if (tipoDeCertificado == "digital") {
+    } 
+    
+    if (tipoDeCertificado == "digital") {
         
         if (textoCertificado == "") {
             Materialize.toast("Informe um Texto para o certificado.", 4000);

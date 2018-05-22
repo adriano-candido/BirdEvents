@@ -88,6 +88,7 @@ class CertificadoControle extends Controlador {
                         $certificado = new CertificadoDigital();
                         $certificado->setId($this->certificado->getId());
                         $certificado->setNome($_POST['nome']);
+                        $certificado->setAnoExercicio($_POST['anoExercicio']);
                         $certificado->setTexto($_POST['texto']);
                         if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
                             $imagem = fopen($_FILES['imagem']['tmp_name'], "r");
@@ -151,6 +152,7 @@ class CertificadoControle extends Controlador {
                         $certificado = new CertificadoDigital();
                         $certificado->setId(0);
                         $certificado->setNome($_POST['nome']);
+                        $certificado->setAnoExercicio($_POST['anoExercicio']);
                         $certificado->setTexto($_POST['texto']);
                         if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
                             $imagem = fopen($_FILES['imagem']['tmp_name'], "r");

@@ -8,8 +8,10 @@ class CertificadoDigital extends Entidade {
 
     protected $id;
     private $nome;
+    private $anoExercicio;
     private $texto;
     private $imagem;
+    
 
     public function getId() {
         return $this->id;
@@ -25,6 +27,14 @@ class CertificadoDigital extends Entidade {
 
     public function setNome($nome) {
         $this->nome = $nome;
+    }
+    
+    public function getAnoExercicio() {
+        return $this->anoExercicio;
+    }
+
+    public function setAnoExercicio($anoExercicio) {
+        $this->anoExercicio = $anoExercicio;
     }
 
     public function getTexto() {

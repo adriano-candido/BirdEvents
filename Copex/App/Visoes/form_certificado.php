@@ -5,12 +5,39 @@
         <form class="col s12" method="POST" name="form_certificado" enctype="multipart/form-data">
             <div class="row">
                 <?php if (isset($certificado)): ?>
-                    <div class="input-field col s12">
+                    <div class="input-field col s8">
                         <i class="material-icons prefix">account_circle</i>
                         <input id="nome" type="text" name="nome" value="<?= $certificado->getNome(); ?>" <?= $disabled; ?>>
                         <label for="nome">Nome</label>
                     </div>
 
+                        <?php
+                    $anos = [];
+                    $anoInicial = 2010;
+                    for ($i = 0; $i < 21; $i++) {
+                        $anos[] = $anoInicial . ".1";
+                        $anos[] = $anoInicial . ".2";
+                        $anoInicial++;
+                    }
+                    ?>
+
+                    <div class="input-field col s4">
+                        <i class="material-icons prefix">event</i>
+                        <select name="anoExercicio" <?= $disabled; ?>>
+                                <option value="" disabled selected>Ano de Exercício</option>
+                                <?php foreach ($anos as $ano): ?>
+                                    <?php if ($ano == $certificado->getAnoExercicio()): ?>
+                                        <option value="<?= $ano; ?>" selected><?= $ano; ?></option>
+                                    <?php else : ?>
+                                        <option value="<?= $ano; ?>" ><?= $ano; ?></option>
+
+                                    <?php
+                                    endif;
+                                endforeach;
+                                ?>
+                            </select>
+                        <label for="anoExercicio">Ano de Exercício</label>
+                    </div>
 
                     <div class="col s12 input-field">
                         <i class="material-icons prefix">chrome_reader_mode</i> 
@@ -24,7 +51,7 @@
                     <?php if ($certificado instanceof \App\Modelos\Certificado): ?>
 
                         <div>
-                            <div class="input-field col s6">
+                            <div class="input-field col s12">
                                 <i class="material-icons prefix">archive </i>
                                 <input  id="caixaReferente" type="text" name="caixaReferente" value="<?= $certificado->getCaixaReferente(); ?>" <?= $disabled; ?>>
                                 <label for="caixaReferente">Caixa Referente</label>
@@ -33,32 +60,7 @@
 
                         <?php
                         echo isset($imagem) ? $imagem : '';
-                        $anos = [];
-                        $anoInicial = 2010;
-                        for ($i = 0; $i < 21; $i++) {
-                            $anos[] = $anoInicial . ".1";
-                            $anos[] = $anoInicial . ".2";
-                            $anoInicial++;
-                        }
                         ?>
-
-                        <div class="input-field col s6 ">
-                            <i class="material-icons prefix">event</i>
-                            <select name="anoExercicio" <?= $disabled; ?>>
-                                <option value="" disabled selected>Ano de Exercício</option>
-                                <?php foreach ($anos as $ano): ?>
-                                    <?php if ($ano == $certificado->getAnoExercicio()): ?>
-                                        <option value="<?= $ano; ?>" selected><?= $ano; ?></option>
-                                    <?php else : ?>
-                                        <option value="<?= $ano; ?>" ><?= $ano; ?></option>
-
-                                    <?php
-                                    endif;
-                                endforeach;
-                                ?>
-                            </select>
-                            <label for="anoExercicio" >Ano de Exercício</label>
-                        </div>
 
                     </div>
 
@@ -118,12 +120,39 @@
 
         <?php else: ?>
 
-            <div class="input-field col s12">
+            <div class="input-field col s8">
                 <i class="material-icons prefix">account_circle</i>
                 <input id="nome" type="text" name="nome">
                 <label for="nome">Nome</label>
             </div>
+            
+            <?php
+            $anos = [];
+            $anoInicial = 2010;
+            for ($i = 0; $i < 21; $i++) {
+                $anos[] = $anoInicial . ".1";
+                $anos[] = $anoInicial . ".2";
+                $anoInicial++;
+            }
+            ?>
+
+            <div class="input-field col s4">
+                <i class="material-icons prefix">event</i>
+                <select name="anoExercicio" <?= $disabled; ?>>
+                    <option value="" disabled selected>Ano de Exercício</option>
+                    <?php foreach ($anos as $ano): ?>
+
+                        <option value="<?= $ano; ?>" ><?= $ano; ?></option>
+
+                        <?php
+                    endforeach;
+                    ?>
+                </select>
+                <label for="anoExercicio">Ano de Exercício</label>
+            </div>
         </div>
+    
+        
 
         <div class="section">
             <div class="row ">
@@ -196,36 +225,10 @@
         </div>
 
         <div class="row section" id="blocoCertificadoFisico" style="display: none">
-            <div class="input-field col s6">
+            <div class="input-field col s12">
                 <i class="material-icons prefix">archive </i>
                 <input  id="caixaReferente" type="text" name="caixaReferente" >
                 <label for="caixaReferente">Caixa Referente</label>
-            </div>
-
-
-            <?php
-            $anos = [];
-            $anoInicial = 2010;
-            for ($i = 0; $i < 21; $i++) {
-                $anos[] = $anoInicial . ".1";
-                $anos[] = $anoInicial . ".2";
-                $anoInicial++;
-            }
-            ?>
-
-            <div class="input-field col s6">
-                <i class="material-icons prefix">event</i>
-                <select name="anoExercicio" <?= $disabled; ?>>
-                    <option value="" disabled selected>Ano de Exercício</option>
-                    <?php foreach ($anos as $ano): ?>
-
-                        <option value="<?= $ano; ?>" ><?= $ano; ?></option>
-
-                        <?php
-                    endforeach;
-                    ?>
-                </select>
-                <label for="anoExercicio">Ano de Exercício</label>
             </div>
 
         </div>
