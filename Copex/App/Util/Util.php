@@ -33,6 +33,7 @@ class Util {
         'Certificado.Vinculados.0',
         'Certificado.Pesquisa_Por_Usuário.1',
         'Certificado.Vincular_Certificados.1',
+        'Certificado.Validação.1',
         'Configuração.Importação.1',
         'Curso.Cadastro.1',
         'Curso.Edição.0',

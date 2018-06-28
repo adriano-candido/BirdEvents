@@ -25,13 +25,14 @@ class CertificadoControle extends Controlador {
     public function processar($parametros) {
         //Colhe a ação do botão digitado
         $acao = Util::get_post_action(
-                        'visualizar', 'editar', 'salvar', 'excluir', 'vincular', 'desvincular', 'vinculados', 'entregar', 'pesquisar_certificados', 'pesquisar_usuarios', 'pesquisar_por_usuario', 'gerar'
+                        'visualizar', 'editar', 'salvar', 'excluir', 'vincular', 'desvincular', 'vinculados', 'entregar', 'pesquisar_certificados', 'pesquisar_usuarios', 'pesquisar_por_usuario', 'gerar', 'validar'
         );
 
 
         $usuario = new \App\Modelos\Usuario();
-        $usuario->setNome('José');
+        $usuario->setNome('Nome');
         $usuario->setTipoAcesso('professor');
+        $usuario->setId(0);
 
         $this->marcacoes = [
             'usuario@nome' => '',
@@ -203,12 +204,12 @@ class CertificadoControle extends Controlador {
                     if ($this->dados['certificados'][$usuario][$index] instanceof CertificadoDigital) {
                         $certificado = $this->dados['certificados'][$usuario][$index];
                         $this->gerarCertificado(
-                                $certificado->getTexto(), $certificado->getImagem(), (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarPorId($usuario)
+                                $certificado->getTexto(), $certificado->getImagem(), (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarPorId($usuario), $certificado
                         );
                     }
                 }
 
-                
+
                 if ($acao == "entregar") {
 
 
@@ -231,7 +232,7 @@ class CertificadoControle extends Controlador {
                     $usuario = $d->mudarEntidade('usuario')->pesquisarPorId($_POST['idUsuario']);
                     $_POST['nome'] = $usuario->getNome();
                 }
-                
+
                 $d = new EntidadeDAO(new \App\Modelos\Usuario());
                 if (isset($_POST['nome']) && $_POST['nome'] !== '') {
                     $usuarios = $d->pesquisarPorNome($_POST['nome']);
@@ -531,6 +532,78 @@ class CertificadoControle extends Controlador {
 
                 break;
 
+            case 'validacao':
+                //Prepara visualização da página
+                $this->visao = 'form_validacao';
+                $this->dados['pagina'] = "Validacao de Certificado";
+                $this->dados['certificado'] = $this->certificado;
+
+                //Verifica se houve ação
+                if ($acao == 'validar') {
+                    $codigoValidacao = $_POST['cod_validacao'];
+
+                    $codigoQuebrado = explode(":", $codigoValidacao);
+
+                    $ehValido = true;
+                    
+                    if (count($codigoQuebrado) != 3) {
+                        $this->retornos[] = "Código inválido";
+                        $ehValido = false;
+                    } else {
+                        $idUsuario = $codigoQuebrado[0];
+                        $idCertificado = $codigoQuebrado[1];
+                        $anoCertificado = $codigoQuebrado[2];
+                        $cpfInformado = str_replace(array(".", "-"), "", $_POST['cpf']);
+
+                        
+                        
+                        $usuarioParaValidar = (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarOnde("id", $idUsuario);
+
+                        if (count($usuarioParaValidar) < 1){
+                            $this->retornos[] = "Usuário não localizado.";
+                            $ehValido = false;
+                        } else if($usuarioParaValidar[0]->getCPF() != $cpfInformado) {                            
+                            $this->retornos[] = "CPF divergente.";
+                            $ehValido = false;
+                        }
+                        
+                        $certificadoParaValidar = (new EntidadeDAO(new \App\Modelos\CertificadoDigital()))->pesquisarOnde("id", $idCertificado);
+                        
+                        if ($ehValido && count($certificadoParaValidar) < 1){
+                            $this->retornos[] = "Certificado inexistente.";
+                            $ehValido = false;
+                        } else if($ehValido && $certificadoParaValidar[0]->getAnoExercicio() != $anoCertificado) {
+                            $this->retornos[] = "Ano de exercício divergente.";
+                            $ehValido = false;
+                        }
+                        
+                        $vinculoParaValidar = (new EntidadeDAO(new \App\Modelos\VinculoCertificadoDigitalUsuario()))->pesquisarOnde("usuario", $idUsuario);
+                        
+                        if ($ehValido && count($vinculoParaValidar) < 1) {
+                            $this->retornos[] = "Usuário não possui certificados.";
+                            $ehValido = false;
+                        } else if($ehValido){
+                            $vinculoEhValido = false;
+                            foreach($vinculoParaValidar as $vinculo){
+                                if($vinculo->getCertificado() == $idCertificado){
+                                    $vinculoEhValido = true;
+                                    break;
+                                }
+                            }
+                            if(!$vinculoEhValido){
+                                $this->retornos[] = "Usuário não é vinculado <br> a esse certificado.";
+                                $ehValido = false;
+                            }
+                        }
+                    }
+
+                    if($ehValido){
+                    $this->retornos[] = "Certificado com código <br> ". $codigoValidacao . " <br> É valido!";
+                    }
+                }
+
+                break;
+
             default:
                 $this->visao = 'pesquisa_certificado';
                 $this->dados['pagina'] = "Lista de Certificados";
@@ -594,7 +667,7 @@ class CertificadoControle extends Controlador {
                 $this->retornos[] = "Certificado excluído com sucesso!";
 
                 break;
-           
+
             case 'vinculados':
                 if (isset($_POST['index']) && $_POST['index'] !== '') {
                     $index = array_shift($_POST['index']);
@@ -619,7 +692,7 @@ class CertificadoControle extends Controlador {
                     $index = explode('/', $_GET['url'])[3];
                     if ($this->dados['resultado'][$index] instanceof CertificadoDigital) {
                         $certificado = $this->dados['resultado'][$index];
-                        $this->gerarCertificado($certificado->getTexto(), $certificado->getImagem(), Login::getUsuario());
+                        $this->gerarCertificado($certificado->getTexto(), $certificado->getImagem(), Login::getUsuario(), $certificado);
                     }
                 }
 
@@ -700,13 +773,20 @@ class CertificadoControle extends Controlador {
         }
     }
 
-    private function gerarCertificado($texto, $imagemCodificada, $usuario) {
+    private function gerarCertificado($texto, $imagemCodificada, $usuario, $certificado = null) {
         $marcacoes = [
             'usuario@nome' => $usuario->getNome(),
             'usuario@tipoAcesso' => $usuario->getTipoAcesso()
         ];
 
         $texto = $this->transformarTexto($texto, $marcacoes);
+
+        $codigoValidacao = "";
+
+        if ($certificado != null) {
+            $codigoValidacao = $usuario->getId() . ":" . $certificado->getId() . ":" . $certificado->getAnoExercicio();
+        }
+
 
         $html = <<<HTML
 <!DOCTYPE html>
@@ -736,19 +816,25 @@ class CertificadoControle extends Controlador {
             padding-rigth: 150px;
             
         }
+                
+        #cod_validacao{ 
+            position:absolute;
+            left: 15px;
+            bottom:10px;
+        }
                
         
         </style>
         
     </head>
     <body>
-        <div id="caixa">    
-            
+        <div id="caixa">  
             <div id="caixa_texto">
                 $texto                               
             </div>
            <img src="data:image/jpg;base64, $imagemCodificada" width="100%" height="100%">
         </div>
+        <div id="cod_validacao"><b><font size="3">$codigoValidacao</font></b></div>        
     </body>
 </html>
 HTML;
