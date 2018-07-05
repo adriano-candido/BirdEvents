@@ -38,7 +38,7 @@ abstract class Controlador {
     }
 
     public function redirecionar($url) {
-        header("Location: /birdevents/Copex/" . $url);
+        header("Location: /copex/" . $url);
         header("Connection: close");
         exit;
     }

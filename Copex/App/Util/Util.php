@@ -160,7 +160,7 @@ class Util {
 
     public static function getBaseURL(){
         //return  '/birdevents/Copex/index.php?pg=';
-        return  '/birdevents/Copex/';
+        return  '/copex/';
     }
 
 }
