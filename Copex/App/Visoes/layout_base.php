@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <base href="/copex/" />
+    <base href="<?= \App\Util\Util::getBaseURL()?>" />
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -18,9 +18,9 @@
         <div id="menu">
 
             <header  class="navbar-fixed">
-                <nav class="blue">
+                <nav class="blue center">
                     <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
-                    <span class="brand-logo center"><?php echo isset($pagina) ? $pagina : ''; ?></span>
+                    <span class="flow-text "><?php echo isset($pagina) ? $pagina : ''; ?></span>
                 </nav>
             </header>
 

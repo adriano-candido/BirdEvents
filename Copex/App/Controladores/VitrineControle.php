@@ -31,12 +31,6 @@ class VitrineControle extends Controlador {
         }
 
 
-        $dataAtual = date('Y-m-d');
-        //print_r($dataAtual);
-
-        $dataInicio = date('Y-m-d', strtotime('+5 day'));
-        //print_r($dataInicio);
-        //$this->dados['projetos'] = $this->dao->pesquisarBETWEEN('inicioOcorrencia', $dataAtual, $dataInicio);
         $this->dados['projetos'] = $this->dao->pesquisarPorNome('');
 
         $this->projetoDAO = new EntidadeDAO(new Anexo());

@@ -32,18 +32,18 @@ class Roteador extends Controlador {
     }
 
     protected function verificaControlador() {
-        $nomeDaClasse = $this->url[0] . 'Controle';
+        $nomeDaClasse = ucfirst($this->url[0]) . 'Controle';
         if (!file_exists('App/Controladores/' . $nomeDaClasse . '.php')) {
-            $nomeDaClasse = 'errorControle';
+            $nomeDaClasse = 'ErrorControle';
         }
 
   
-        if($nomeDaClasse != "loginControle" 
-                && $nomeDaClasse != "vitrineControle" 
-                && $nomeDaClasse != "errorControle"
+        if($nomeDaClasse != "LoginControle" 
+                && $nomeDaClasse != "VitrineControle" 
+                && $nomeDaClasse != "ErrorControle"
                 && ($this->url[0] . "/" . $this->url[1] != "visitante/cadastro")                
                 && \App\Modelos\Login::checaPermissao($this->url[0].".".$this->url[1]) != 1){
-            $this->redirecionar("error/" . $this->url[0].".".$this->url[1]);
+            $this->redirecionar("Error/" . $this->url[0].".".$this->url[1]);
         }
         $this->controlador = $this->getControle($nomeDaClasse);
     }

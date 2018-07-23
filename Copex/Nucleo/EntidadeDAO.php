@@ -17,7 +17,7 @@ class EntidadeDAO {
     }
 
     public function mudarEntidade($entidade) {
-        $classeEntidade = 'App\\Modelos\\' . $entidade;
+        $classeEntidade = 'App\\Modelos\\' . ucfirst($entidade);
 
         $this->entidade = new $classeEntidade();
         $this->dadosEntidade = new \ReflectionClass($this->entidade);
@@ -247,7 +247,7 @@ class EntidadeDAO {
             foreach ($this->atributos as $atributo) {
                 if (property_exists($this->entidade, 'mapa') && array_key_exists($atributo, $this->entidade->getMapa())) {
 
-                    $classeInterna = 'App\\Modelos\\' . $atributo;
+                    $classeInterna = 'App\\Modelos\\' . ucfirst($atributo);
                     $classeInterna = new $classeInterna();
                     $dao = new EntidadeDAO($classeInterna);
                     $classeInterna = $dao->pesquisarPorId($resultado[$atributo]);

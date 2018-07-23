@@ -46,7 +46,6 @@ class Login {
     public static function getPermissoesUsuario() {
         $permissoesVinculadas = (new EntidadeDAO(new VinculoUsuarioPermissao()))->pesquisarOnde('usuario', self::getUsuario()->getId());
         $resultado = unserialize($permissoesVinculadas[0]->getPermissao());
-        
         return $resultado;
     }
 

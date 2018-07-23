@@ -10,7 +10,7 @@ Nucleo\DB::conectar("localhost", "root", "", "copex");
 
 // Configura o local para português Brasil
 setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
-#echo strftime("%A, %d de %B de %Y", strtotime( date('Y-m-d H:i:s') ));
+date_default_timezone_set('America/Sao_Paulo');
 
 $roteador;
 

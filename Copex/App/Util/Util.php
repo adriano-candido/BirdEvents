@@ -38,7 +38,11 @@ class Util {
         'Curso.Cadastro.1',
         'Curso.Edição.0',
         'Curso.Pesquisa.1',
-        'Curso.Visualização.0',
+        'Curso.Visualização.0',        
+        'Iniciação.Cadastro.1',
+        'Iniciação.Edição.0',
+        'Iniciação.Pesquisa.1',
+        'Iniciação.Visualização.0',        
         'Professor.Edição.0',
         'Professor.Pesquisa.1',
         'Professor.Visualização.0',
@@ -69,6 +73,7 @@ class Util {
         "Certificado" => "chrome_reader_mode",
         "Configuração" => "settings",
         "Curso" => "collections_bookmark",
+        "Iniciação" => "school",
         "Professor" => "account_box",
         "Projeto" => "extension",
         "Setor" => "collections_bookmark",
@@ -159,8 +164,8 @@ class Util {
     }
 
     public static function getBaseURL(){
-        //return  '/birdevents/Copex/index.php?pg=';
-        return  '/copex/';
+        return  '/birdevents/copex/';#index.php?pg=';
+        #return  '/copex/';
     }
 
 }

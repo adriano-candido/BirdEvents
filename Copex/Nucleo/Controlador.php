@@ -38,7 +38,7 @@ abstract class Controlador {
     }
 
     public function redirecionar($url) {
-        header("Location: /copex/" . $url);
+        header("Location:" . \App\Util\Util::getBaseURL() . $url);
         header("Connection: close");
         exit;
     }

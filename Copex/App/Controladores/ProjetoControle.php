@@ -42,6 +42,14 @@ class ProjetoControle extends Controlador {
             'reprovado' => 'Reprovado'
         );
 
+        $this->dados['tipoSubmissao'] = array(
+            'extensaoCurto' => 'Extensão Curto Prazo',
+            'extensaoMedio' => 'Extensão Médio Prazo',
+            'extensaoLongo' => 'Extensão Longo Prazo',
+            'iniciacao' => 'Iniciação Científica',
+            'monitoria' => 'Monitoria'
+        );
+
         switch ($pagina) {
             case 'visualizacao':
                 //Prepara visualização da página
@@ -88,7 +96,7 @@ class ProjetoControle extends Controlador {
 
                         $tipo;
                         $errosAoSalvar = false;
-                        
+
                         if (in_array($extensão, $imagensPermitidas)) {
                             $tipo = "/imagens/";
                         } else if (in_array($extensão, $documentosPermitidos)) {
@@ -100,7 +108,7 @@ class ProjetoControle extends Controlador {
 
                         if ($errosAoSalvar == false) {
                             $anexo = new \App\Modelos\Anexo();
-                            $anexo->setNome('(copex)'.$arquivo['name']);
+                            $anexo->setNome('(copex)' . $arquivo['name']);
                             $anexo->setTipo($tipo);
                             $anexo->setDataPostagem(date("Y-m-d"));
 
@@ -157,6 +165,7 @@ class ProjetoControle extends Controlador {
                     $projeto->setNome($_POST['nome']);
 
                     $projeto->setTipo($_POST['tipoprojeto']);
+                    $projeto->setTipoSubmissao($this->dados['tipoSubmissao'][$_POST['tipoSubmissao']]);
                     $projeto->setDescricao($_POST['descricao']);
                     $projeto->setInicioOcorrencia(Util::formataDataAnoMesDia($_POST['inicioOcorrencia']));
                     $projeto->setfinalOcorrencia(Util::formataDataAnoMesDia($_POST['finalOcorrencia']));
@@ -252,23 +261,23 @@ class ProjetoControle extends Controlador {
 
                         if ($projeto->getTipo() == "curso" || $projeto->getTipo() == "institucional") {
                             foreach ($_POST['curso'] as $curso) {
-                                $vinculoAreaProjeto = new VinculoAreaProjeto();
-                                $vinculoAreaProjeto->setId(0);
-                                $vinculoAreaProjeto->setProjeto($ultimoId);
-                                $vinculoAreaProjeto->setTipoArea("curso");
-                                $vinculoAreaProjeto->setArea($curso);
-                                $daoVinculo->salvar($vinculoAreaProjeto);
+                                $VinculoAreaProjeto = new VinculoAreaProjeto();
+                                $VinculoAreaProjeto->setId(0);
+                                $VinculoAreaProjeto->setProjeto($ultimoId);
+                                $VinculoAreaProjeto->setTipoArea("curso");
+                                $VinculoAreaProjeto->setArea($curso);
+                                $daoVinculo->salvar($VinculoAreaProjeto);
                             }
                         } else
 
                         if ($projeto->getTipo() == "outros") {
 
-                            $vinculoAreaProjeto = new VinculoAreaProjeto();
-                            $vinculoAreaProjeto->setId(0);
-                            $vinculoAreaProjeto->setProjeto($ultimoId);
-                            $vinculoAreaProjeto->setTipoArea("setor");
-                            $vinculoAreaProjeto->setArea($_POST['setor']);
-                            $daoVinculo->salvar($vinculoAreaProjeto);
+                            $VinculoAreaProjeto = new VinculoAreaProjeto();
+                            $VinculoAreaProjeto->setId(0);
+                            $VinculoAreaProjeto->setProjeto($ultimoId);
+                            $VinculoAreaProjeto->setTipoArea("setor");
+                            $VinculoAreaProjeto->setArea($_POST['setor']);
+                            $daoVinculo->salvar($VinculoAreaProjeto);
                         }
 
 
@@ -343,6 +352,7 @@ class ProjetoControle extends Controlador {
                     $projeto->setId(0);
                     $projeto->setNome($_POST['nome']);
                     $projeto->setTipo($_POST['tipoprojeto']);
+                    $projeto->setTipoSubmissao($this->dados['tipoSubmissao'][$_POST['tipoSubmissao']]);
                     $projeto->setDescricao($_POST['descricao']);
                     $projeto->setInicioOcorrencia(Util::formataDataAnoMesDia($_POST['inicioOcorrencia']));
                     $projeto->setfinalOcorrencia(Util::formataDataAnoMesDia($_POST['finalOcorrencia']));
@@ -435,23 +445,23 @@ class ProjetoControle extends Controlador {
 
                         if ($projeto->getTipo() == "curso" || $projeto->getTipo() == "institucional") {
                             foreach ($_POST['curso'] as $curso) {
-                                $vinculoAreaProjeto = new VinculoAreaProjeto();
-                                $vinculoAreaProjeto->setId(0);
-                                $vinculoAreaProjeto->setProjeto($ultimoId);
-                                $vinculoAreaProjeto->setTipoArea("curso");
-                                $vinculoAreaProjeto->setArea($curso);
-                                $daoVinculo->salvar($vinculoAreaProjeto);
+                                $VinculoAreaProjeto = new VinculoAreaProjeto();
+                                $VinculoAreaProjeto->setId(0);
+                                $VinculoAreaProjeto->setProjeto($ultimoId);
+                                $VinculoAreaProjeto->setTipoArea("curso");
+                                $VinculoAreaProjeto->setArea($curso);
+                                $daoVinculo->salvar($VinculoAreaProjeto);
                             }
                         } else
 
                         if ($projeto->getTipo() == "outros") {
 
-                            $vinculoAreaProjeto = new VinculoAreaProjeto();
-                            $vinculoAreaProjeto->setId(0);
-                            $vinculoAreaProjeto->setProjeto($ultimoId);
-                            $vinculoAreaProjeto->setTipoArea("setor");
-                            $vinculoAreaProjeto->setArea($_POST['setor']);
-                            $daoVinculo->salvar($vinculoAreaProjeto);
+                            $VinculoAreaProjeto = new VinculoAreaProjeto();
+                            $VinculoAreaProjeto->setId(0);
+                            $VinculoAreaProjeto->setProjeto($ultimoId);
+                            $VinculoAreaProjeto->setTipoArea("setor");
+                            $VinculoAreaProjeto->setArea($_POST['setor']);
+                            $daoVinculo->salvar($VinculoAreaProjeto);
                         }
 
 
@@ -551,22 +561,26 @@ class ProjetoControle extends Controlador {
                 break;
 
             default:
+                $filtroSituacao = isset($_POST['filtroSituacao']) ? $_POST['filtroSituacao'] : 'todas';
 
                 if (Login::checaPermissao("Projeto.Visualização_Geral")) {
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome order by situacao;", array("nome" => "%" . $_POST['nome'] . "%"));//pesquisarPorNome($_POST['nome']);
-                    } else if (!isset($_POST['nome'])) {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE('order by id desc limit 50 ;', array());
+                        $filtro = $filtroSituacao == 'todas' ? "" : "AND situacao='" . $filtroSituacao ."'";
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome " . $filtro . " order by id desc;", array("nome" => "%" . $_POST['nome'] . "%")); //pesquisarPorNome($_POST['nome']);
+                    } else if (!isset($_POST['nome']) || $_POST['nome'] == '') {
+                        $filtro = $filtroSituacao == 'todas' ? "" : "WHERE situacao='" . $filtroSituacao ."'";
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE($filtro . " order by id desc limit 50 ;", array());
                     } else {
                         unset($this->dados['resultado']);
                     }
                 } else {
                     $idUsuarioLogado = Login::getUsuario()->getId();
 
+                    $filtro = $filtroSituacao == 'todas' ? '' : "AND situacao='" . $filtroSituacao."'";
                     if (isset($_POST['nome']) && $_POST['nome'] !== '') {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado' order by situacao", array("nome" => "%" . $_POST['nome'] . "%"));
-                    } else if (!isset($_POST['nome'])) {
-                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE usuario ='$idUsuarioLogado' order by id desc limit 50 ;", array());
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE nome LIKE :nome AND usuario ='$idUsuarioLogado' " . $filtro . " order by id desc", array("nome" => "%" . $_POST['nome'] . "%"));
+                    } else if (!isset($_POST['nome'])|| $_POST['nome'] == '') {
+                        $this->dados['resultado'] = $this->dao->pesquisarLIVRE("WHERE usuario ='$idUsuarioLogado' " . $filtro . " order by id desc limit 50 ;", array());
                     } else {
                         unset($this->dados['resultado']);
                     }

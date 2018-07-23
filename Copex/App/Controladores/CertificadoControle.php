@@ -99,7 +99,7 @@ class CertificadoControle extends Controlador {
                             $imagemCodificada = $this->certificado->getImagem();
                         }
                         $certificado->setImagem($imagemCodificada);
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                     }
 
 
@@ -165,7 +165,7 @@ class CertificadoControle extends Controlador {
 
                         $imagemCodificada = base64_encode(fread($imagem, $tamanho));
                         $certificado->setImagem($imagemCodificada);
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                     }
                     $this->dao->salvar($certificado);
                     $this->certificado = $certificado;
@@ -248,7 +248,7 @@ class CertificadoControle extends Controlador {
 
 
                         foreach ($usuarios as $usuario) {
-                            $d->mudarEntidade('vinculocertificadousuario');
+                            $d->mudarEntidade('VinculoCertificadoUsuario');
                             $vinculos = $d->pesquisarOnde('usuario', $usuario->getId());
 
                             if (count($vinculos) > 0) {
@@ -264,7 +264,7 @@ class CertificadoControle extends Controlador {
                                 $this->dados['vinculos'][$usuario->getId()] = $vinculos;
                             }
 
-                            $d->mudarEntidade('vinculocertificadodigitalusuario');
+                            $d->mudarEntidade('VinculoCertificadoDigitalUsuario');
                             $vinculosDigitais = $d->pesquisarOnde('usuario', $usuario->getId());
 
                             if (count($vinculosDigitais) > 0) {
@@ -272,7 +272,7 @@ class CertificadoControle extends Controlador {
                                     $idCertificados[] = $vinculo->getCertificado();
                                 }
 
-                                $d->mudarEntidade('certificadodigital');
+                                $d->mudarEntidade('CertificadoDigital');
                                 $certificados = $d->pesquisarIN('id', $idCertificados);
                                 unset($idCertificados);
 
@@ -299,7 +299,7 @@ class CertificadoControle extends Controlador {
                 if (!isset($_POST['nome_usuario']) && !isset($_POST['nome_certificado'])) {
 
                     $certificadosFisicosDisponiveis = $dao->mudarEntidade('certificado')->pesquisarLIVRE('order by id desc limit 50;', array()); #unset($this->dados['certificadosDisponiveis']);
-                    $certificadosDigitaisDisponiveis = $dao->mudarEntidade('certificadodigital')->pesquisarLIVRE('order by id desc limit 50;', array());
+                    $certificadosDigitaisDisponiveis = $dao->mudarEntidade('CertificadoDigital')->pesquisarLIVRE('order by id desc limit 50;', array());
                     $this->dados['certificadosDisponiveis'] = array_merge($certificadosFisicosDisponiveis, $certificadosDigitaisDisponiveis);
                     $this->dados['usuarios'] = $dao->mudarEntidade('usuario')->pesquisarLIVRE('order by id desc limit 50;', array());
                 }
@@ -308,11 +308,11 @@ class CertificadoControle extends Controlador {
                     case 'pesquisar_certificados':
                         if (isset($_POST['nome_certificado']) && $_POST['nome_certificado'] !== '') {
                             $certificadosFisicosDisponiveis = $dao->mudarEntidade('certificado')->pesquisarPorNome($_POST['nome_certificado']);
-                            $certificadosDigitaisDisponiveis = $dao->mudarEntidade('certificadodigital')->pesquisarPorNome($_POST['nome_certificado']);
+                            $certificadosDigitaisDisponiveis = $dao->mudarEntidade('CertificadoDigital')->pesquisarPorNome($_POST['nome_certificado']);
                             $this->dados['certificadosDisponiveis'] = array_merge($certificadosFisicosDisponiveis, $certificadosDigitaisDisponiveis);
                         } else {
                             $certificadosFisicosDisponiveis = $dao->mudarEntidade('certificado')->pesquisarLIVRE('order by id desc limit 50;', array());
-                            $certificadosDigitaisDisponiveis = $dao->mudarEntidade('certificadodigital')->pesquisarLIVRE('order by id desc limit 50;', array());
+                            $certificadosDigitaisDisponiveis = $dao->mudarEntidade('CertificadoDigital')->pesquisarLIVRE('order by id desc limit 50;', array());
                             $this->dados['certificadosDisponiveis'] = array_merge($certificadosFisicosDisponiveis, $certificadosDigitaisDisponiveis);
                         }
                         break;
@@ -545,7 +545,7 @@ class CertificadoControle extends Controlador {
                     $codigoQuebrado = explode(":", $codigoValidacao);
 
                     $ehValido = true;
-                    
+
                     if (count($codigoQuebrado) != 3) {
                         $this->retornos[] = "Código inválido";
                         $ehValido = false;
@@ -555,50 +555,50 @@ class CertificadoControle extends Controlador {
                         $anoCertificado = $codigoQuebrado[2];
                         $cpfInformado = str_replace(array(".", "-"), "", $_POST['cpf']);
 
-                        
-                        
+
+
                         $usuarioParaValidar = (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarOnde("id", $idUsuario);
 
-                        if (count($usuarioParaValidar) < 1){
+                        if (count($usuarioParaValidar) < 1) {
                             $this->retornos[] = "Usuário não localizado.";
                             $ehValido = false;
-                        } else if($usuarioParaValidar[0]->getCPF() != $cpfInformado) {                            
+                        } else if ($usuarioParaValidar[0]->getCPF() != $cpfInformado) {
                             $this->retornos[] = "CPF divergente.";
                             $ehValido = false;
                         }
-                        
+
                         $certificadoParaValidar = (new EntidadeDAO(new \App\Modelos\CertificadoDigital()))->pesquisarOnde("id", $idCertificado);
-                        
-                        if ($ehValido && count($certificadoParaValidar) < 1){
+
+                        if ($ehValido && count($certificadoParaValidar) < 1) {
                             $this->retornos[] = "Certificado inexistente.";
                             $ehValido = false;
-                        } else if($ehValido && $certificadoParaValidar[0]->getAnoExercicio() != $anoCertificado) {
+                        } else if ($ehValido && $certificadoParaValidar[0]->getAnoExercicio() != $anoCertificado) {
                             $this->retornos[] = "Ano de exercício divergente.";
                             $ehValido = false;
                         }
-                        
+
                         $vinculoParaValidar = (new EntidadeDAO(new \App\Modelos\VinculoCertificadoDigitalUsuario()))->pesquisarOnde("usuario", $idUsuario);
-                        
+
                         if ($ehValido && count($vinculoParaValidar) < 1) {
                             $this->retornos[] = "Usuário não possui certificados.";
                             $ehValido = false;
-                        } else if($ehValido){
+                        } else if ($ehValido) {
                             $vinculoEhValido = false;
-                            foreach($vinculoParaValidar as $vinculo){
-                                if($vinculo->getCertificado() == $idCertificado){
+                            foreach ($vinculoParaValidar as $vinculo) {
+                                if ($vinculo->getCertificado() == $idCertificado) {
                                     $vinculoEhValido = true;
                                     break;
                                 }
                             }
-                            if(!$vinculoEhValido){
+                            if (!$vinculoEhValido) {
                                 $this->retornos[] = "Usuário não é vinculado <br> a esse certificado.";
                                 $ehValido = false;
                             }
                         }
                     }
 
-                    if($ehValido){
-                    $this->retornos[] = "Certificado com código <br> ". $codigoValidacao . " <br> É valido!";
+                    if ($ehValido) {
+                        $this->retornos[] = "Certificado com código <br> " . $codigoValidacao . " <br> É valido!";
                     }
                 }
 
@@ -625,7 +625,7 @@ class CertificadoControle extends Controlador {
                     if ($certificadoSelecionado instanceof Certificado) {
                         $this->dao->mudarEntidade('certificado');
                     } else if ($certificadoSelecionado instanceof CertificadoDigital) {
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                     }
 
                     $this->certificado = $this->dao->pesquisarPorId($certificadoSelecionado->getId());
@@ -643,7 +643,7 @@ class CertificadoControle extends Controlador {
                     if ($certificadoSelecionado instanceof Certificado) {
                         $this->dao->mudarEntidade('certificado');
                     } else if ($certificadoSelecionado instanceof CertificadoDigital) {
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                     }
 
                     $this->certificado = $this->dao->pesquisarPorId($certificadoSelecionado->getId());
@@ -677,7 +677,7 @@ class CertificadoControle extends Controlador {
                     if ($certificadoSelecionado instanceof Certificado) {
                         $this->dao->mudarEntidade('certificado');
                     } else if ($certificadoSelecionado instanceof CertificadoDigital) {
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                     }
 
                     $this->certificado = $this->dao->pesquisarPorId($certificadoSelecionado->getId());
@@ -701,14 +701,14 @@ class CertificadoControle extends Controlador {
                         $this->dao->mudarEntidade('certificado');
                         $certificadosComEsseNome = $this->dao->pesquisarPorNome($_POST['nome']);
                         $certificadosComEsseAno = $this->dao->pesquisarOnde('anoExercicio', $_POST['nome']);
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                         $certificadosDigitaisComEsseNome = $this->dao->pesquisarPorNome($_POST['nome']);
                         $this->dados['resultado'] = array_merge($certificadosComEsseNome, $certificadosComEsseAno, $certificadosDigitaisComEsseNome);
                     } else if (!isset($_POST['nome'])) {
 
                         $this->dao->mudarEntidade('certificado');
                         $certificadosFisicos = $this->dao->pesquisarLIVRE('order by id desc limit 50;', array());
-                        $this->dao->mudarEntidade('certificadodigital');
+                        $this->dao->mudarEntidade('CertificadoDigital');
                         $certificadosDigitais = $this->dao->pesquisarLIVRE('order by id desc limit 50;', array());
                         $this->dados['resultado'] = array_merge($certificadosFisicos, $certificadosDigitais);
                     } else {
@@ -736,12 +736,18 @@ class CertificadoControle extends Controlador {
                             }
                         }
 
-                        $daoVinculo->mudarEntidade('certificado');
-                        $certificadosFisicos = $daoVinculo->pesquisarIN('id', $idCertificadosFisicos);
+                        $certificadosFisicos = [];
+                        if (count($idCertificadosFisicos) > 0) {
+                            $daoVinculo->mudarEntidade('certificado');
+                            $certificadosFisicos = $daoVinculo->pesquisarIN('id', $idCertificadosFisicos);
+                        }
                         unset($idCertificadosFisicos);
 
-                        $daoVinculoDigital->mudarEntidade('certificadodigital');
-                        $certificadosDigitais = $daoVinculoDigital->pesquisarIN('id', $idCertificadosDigitais);
+                        $certificadosDigitais = [];
+                        if (count($idCertificadosDigitais) > 0) {
+                            $daoVinculoDigital->mudarEntidade('CertificadoDigital');
+                            $certificadosDigitais = $daoVinculoDigital->pesquisarIN('id', $idCertificadosDigitais);
+                        }
                         unset($idCertificadosDigitais);
 
                         $certificados = array_merge($certificadosFisicos, $certificadosDigitais);
@@ -840,7 +846,7 @@ class CertificadoControle extends Controlador {
 HTML;
 
 
-        require_once("vendor\dompdf\autoload.inc.php");
+        require_once("vendor/dompdf/autoload.inc.php");
 
         $dom = new \Dompdf\Dompdf();
 
@@ -850,7 +856,7 @@ HTML;
 
         $dom->render();
 
-// Output the generated PDF to Browser
+        //Output the generated PDF to Browser
         $dom->stream(
                 "certificado", // Nome do arquivo de saída
                 array(

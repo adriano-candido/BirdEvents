@@ -2,11 +2,27 @@
 
     <form method="POST" class="card row">
         <br>
-        <div class="input-field col s8 offset-s1">
+        <div class="input-field col s6 offset-s1">
             <input  id="inp_pesquisar" type="text" class="validate" name="nome">
             <label for="inp_pesquisar">Pesquisar</label>
         </div>
+        <div class="input-field col s2">
+            <select name="filtroSituacao" >
+                <option value="todas" selected>Todas</option>
+                <?php
+                if (isset($situacoes) && count($situacoes) > 0):
+                    foreach ($situacoes as $index => $situacao):
+                        ?>
+                        <option value="<?= $index ?>"><?= $situacao ?></option>
+                        <?php
+                    endforeach;
+                endif;
+                ?>
+            </select>
+            <label >Filtro por situação</label>
+        </div>
         <button class="waves-effect btn-flat btn-large col s2" name="pesquisar"><i class="material-icons ">search</i></button>
+        
     </form>
 
     <form method="POST">

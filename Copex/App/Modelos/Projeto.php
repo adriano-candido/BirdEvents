@@ -9,6 +9,7 @@ class Projeto extends Entidade {
     protected $id;
     private $nome;
     private $tipo;
+    private $tipoSubmissao;
     private $usuario;
     private $descricao;
     private $inicioInscricao;
@@ -53,6 +54,14 @@ class Projeto extends Entidade {
 
     public function setTipo($tipo) {
         $this->tipo = $tipo;
+    }
+    
+    public function getTipoSubmissao() {
+        return $this->tipoSubmissao;
+    }
+
+    public function setTipoSubmissao($tipoSubmissao) {
+        $this->tipoSubmissao = $tipoSubmissao;
     }
 
     public function getUsuario() {

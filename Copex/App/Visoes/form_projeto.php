@@ -115,6 +115,29 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">collections_bookmark</i>
+                        <select name="tipoSubmissao" >
+                            <option value="" disabled selected>Tipo de Submissão</option>
+                            <?php
+                            if (isset($tipoSubmissao) && count($tipoSubmissao) > 0):
+                                foreach ($tipoSubmissao as $index => $sub):
+                                    if ($sub == $projeto->getTipoSubmissao()):
+                                        ?>
+                                        <option value="<?= $index ?>" selected=""><?= $sub ?></option>
+                                    <?php else:
+                                        ?>
+                                        <option value="<?= $index ?>"><?= $sub ?></option>
+                                    <?php
+                                    endif;
+                                endforeach;
+                            endif;
+                            ?>
+                        </select>
+                        <label >Tipos de Submissão</label>
+                    </div>
+                </div>
 
         </div>
 
@@ -196,13 +219,13 @@
             </li>
             <li class="collection-item">
                 <ul style="max-height: 150px; overflow-y: scroll">
-                    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() == '/imagens/'): ?>
+    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() == '/imagens/'): ?>
 
                             <li class="collection-item">
 
                                 <div>
                                     <i class="material-icons left">image</i>
-                                    <?= $anexo->getNome(); ?>
+            <?= $anexo->getNome(); ?>
                                     <div class="secondary-content">
                                         <img title="Clique para ampliar" class="materialboxed" width="50" src="<?= $anexo->getLocalizacao(); ?>">
                                     </div>
@@ -222,7 +245,7 @@
             </li>
             <li class="collection-item">
                 <ul style="max-height: 150px; overflow-y: scroll">
-                    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() !== '/imagens/'): ?>
+    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() !== '/imagens/'): ?>
 
                             <li class="collection-item">
 
@@ -234,7 +257,7 @@
                                             echo 'description';
                                         }
                                         ?></i>
-                                    <?= $anexo->getNome(); ?>
+            <?= $anexo->getNome(); ?>
                                     <a href="<?= $anexo->getLocalizacao(); ?>" target="_black" class="secondary-content">
                                         <i class="material-icons right">file_download</i>
                                         Baixar Anexo
@@ -315,17 +338,17 @@
                     </li>
                     <li class="collection-item">
                         <ul style="max-height: 300px; overflow-y: scroll">
-                            <?php foreach ($observacoes as $observacao): ?>
+    <?php foreach ($observacoes as $observacao): ?>
 
                                 <li class="collection-item">
                                     <p class="grey-text text-darken-4 secondary-content" >
-                                        <?php echo \App\Util\Util::formataDataDiaMesAno($observacao->getDataPostagem()); ?>
+        <?php echo \App\Util\Util::formataDataDiaMesAno($observacao->getDataPostagem()); ?>
                                     </p>
                                     <div>
                                         <strong class="grey-text text-darken-4"><?= $observacao->getUsuario()->getNome(); ?></strong>
 
                                         <p class="grey-text text-darken-2" >
-                                            <?= $observacao->getConteudo(); ?>
+        <?= $observacao->getConteudo(); ?>
                                         </p>
                                     </div>
 
@@ -356,11 +379,11 @@
             <div class="col s1">
                 <button class="waves-effect blue btn" name="salvar" type="submit">salvar</button>
             </div>
-        <?php endif; ?> 
+    <?php endif; ?> 
 
 
 
-    <?php else: ?>
+<?php else: ?>
 
         <div class="input-field col s12">
             <i class="material-icons prefix">event</i>
@@ -407,7 +430,7 @@
 
                 <select name="setor" <?= $disabled; ?>>
                     <option value="" disabled selected>Setor</option>
-                    <?php if (isset($setores) && count($setores) > 0): foreach ($setores as $setor):; ?>
+    <?php if (isset($setores) && count($setores) > 0): foreach ($setores as $setor):; ?>
 
                             <option value="<?= $setor->getId(); ?>" ><?= $setor->getNome(); ?></option>
 
@@ -427,7 +450,7 @@
 
         <ul class="collection" style="max-height: 300px; overflow-y: scroll">
 
-            <?php if (isset($cursos) && count($cursos) > 0): foreach ($cursos as $curso): ?>
+    <?php if (isset($cursos) && count($cursos) > 0): foreach ($cursos as $curso): ?>
                     <li class="collection-item">
                         <input class="limited" type="checkbox" id="<?= $curso->getId() ?>" value="<?= $curso->getId() ?>" name="curso[]"/>
                         <label for="<?= $curso->getId() ?>" ><?= $curso->getNome() ?></label>
@@ -439,7 +462,7 @@
                 <li class="collection-item">
                     <span class="title"></span>
                 </li>
-            <?php endif; ?>
+    <?php endif; ?>
         </ul>
 
 
@@ -457,6 +480,24 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">collections_bookmark</i>
+            <select name="tipoSubmissao" >
+                <option value="" disabled selected>Tipo de Submissão</option>
+                <?php
+                if (isset($tipoSubmissao) && count($tipoSubmissao) > 0):
+                    foreach ($tipoSubmissao as $index => $sub):
+                        ?>
+                        <option value="<?= $index ?>"><?= $sub ?></option>
+                        <?php
+                    endforeach;
+                endif;
+                ?>
+            </select>
+            <label >Tipos de Submissão</label>
+        </div>
+    </div>
 
     </div>
 
@@ -592,7 +633,7 @@
             <button class="waves-effect blue btn" name="salvar" type="submit">salvar</button>
         </div>
 
-    <?php endif; ?>
+<?php endif; ?>
     <div class="col s1 offset-s2 offset-l1">
         <a href="projeto/pesquisa" class="waves-effect white blue-text btn">Cancelar</a>
     </div>
