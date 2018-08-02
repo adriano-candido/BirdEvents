@@ -25,7 +25,7 @@ class CertificadoControle extends Controlador {
     public function processar($parametros) {
         //Colhe a ação do botão digitado
         $acao = Util::get_post_action(
-                        'visualizar', 'editar', 'salvar', 'excluir', 'vincular', 'desvincular', 'vinculados', 'entregar', 'pesquisar_certificados', 'pesquisar_usuarios', 'pesquisar_por_usuario', 'gerar', 'validar'
+                        'visualizar', 'editar', 'salvar', 'excluir', 'vincular', 'desvincular', 'vinculados', 'entregar', 'pesquisar_certificados', 'pesquisar_usuarios', 'pesquisar_por_usuario', 'gerar', 'validar', 'validarOutro'
         );
 
 
@@ -535,8 +535,10 @@ class CertificadoControle extends Controlador {
             case 'validacao':
                 //Prepara visualização da página
                 $this->visao = 'form_validacao';
-                $this->dados['pagina'] = "Validacao de Certificado";
+                $this->dados['pagina'] = "Validação de Certificado";
                 $this->dados['certificado'] = $this->certificado;
+
+                unset($this->dados['certificadoAutentico']);
 
                 //Verifica se houve ação
                 if ($acao == 'validar') {
@@ -553,17 +555,12 @@ class CertificadoControle extends Controlador {
                         $idUsuario = $codigoQuebrado[0];
                         $idCertificado = $codigoQuebrado[1];
                         $anoCertificado = $codigoQuebrado[2];
-                        $cpfInformado = str_replace(array(".", "-"), "", $_POST['cpf']);
-
 
 
                         $usuarioParaValidar = (new EntidadeDAO(new \App\Modelos\Usuario()))->pesquisarOnde("id", $idUsuario);
 
                         if (count($usuarioParaValidar) < 1) {
                             $this->retornos[] = "Usuário não localizado.";
-                            $ehValido = false;
-                        } else if ($usuarioParaValidar[0]->getCPF() != $cpfInformado) {
-                            $this->retornos[] = "CPF divergente.";
                             $ehValido = false;
                         }
 
@@ -598,8 +595,12 @@ class CertificadoControle extends Controlador {
                     }
 
                     if ($ehValido) {
-                        $this->retornos[] = "Certificado com código <br> " . $codigoValidacao . " <br> É valido!";
+                        $this->dados['certificadoAutentico'] = [];
+                        $this->dados['certificadoAutentico']['certificado'] = $certificadoParaValidar[0];
+                        $this->dados['certificadoAutentico']['usuario'] = $usuarioParaValidar[0];
                     }
+                } else if ($acao == 'validarOutro') {
+                    unset($this->dados['certificadoAutentico']);
                 }
 
                 break;
@@ -840,7 +841,7 @@ class CertificadoControle extends Controlador {
             </div>
            <img src="data:image/jpg;base64, $imagemCodificada" width="100%" height="100%">
         </div>
-        <div id="cod_validacao"><b><font size="3">$codigoValidacao</font></b></div>        
+        <div id="cod_validacao"><b><font size="1">Código do Certificado:</font>  <font size="2">$codigoValidacao</font>  <br> <font size="1">Verifique a autenticidade em :http://www.fvscopex.com/copex/certificado/validacao</font></b></div>        
     </body>
 </html>
 HTML;

@@ -2,7 +2,10 @@
 
     <div class="row">
         <form class="col s12"  method="POST" enctype="multipart/form-data" name="form_projeto">
-            <div class="section">
+            <div class="col offset-s11 s1">
+                <a href="https://goo.gl/yatMWA" target="_black" class="btn-floating btn-large red pulse tooltipped" data-position="bottom" data-tooltip="ACESSAR FORMULÁRIOS ATUALIZADOS"><i class="material-icons">sync_problem</i></a>
+            </div>
+            <div class="section">    
                 <h5 class="blue-text text-darken-3">Informações Básicas</h5>
                 <br>
                 <div class="row">
@@ -219,13 +222,13 @@
             </li>
             <li class="collection-item">
                 <ul style="max-height: 150px; overflow-y: scroll">
-    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() == '/imagens/'): ?>
+                    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() == '/imagens/'): ?>
 
                             <li class="collection-item">
 
                                 <div>
                                     <i class="material-icons left">image</i>
-            <?= $anexo->getNome(); ?>
+                                    <?= $anexo->getNome(); ?>
                                     <div class="secondary-content">
                                         <img title="Clique para ampliar" class="materialboxed" width="50" src="<?= $anexo->getLocalizacao(); ?>">
                                     </div>
@@ -245,7 +248,7 @@
             </li>
             <li class="collection-item">
                 <ul style="max-height: 150px; overflow-y: scroll">
-    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() !== '/imagens/'): ?>
+                    <?php foreach ($anexos as $anexo): if ($anexo->getTipo() !== '/imagens/'): ?>
 
                             <li class="collection-item">
 
@@ -257,7 +260,7 @@
                                             echo 'description';
                                         }
                                         ?></i>
-            <?= $anexo->getNome(); ?>
+                                    <?= $anexo->getNome(); ?>
                                     <a href="<?= $anexo->getLocalizacao(); ?>" target="_black" class="secondary-content">
                                         <i class="material-icons right">file_download</i>
                                         Baixar Anexo
@@ -338,17 +341,17 @@
                     </li>
                     <li class="collection-item">
                         <ul style="max-height: 300px; overflow-y: scroll">
-    <?php foreach ($observacoes as $observacao): ?>
+                            <?php foreach ($observacoes as $observacao): ?>
 
                                 <li class="collection-item">
                                     <p class="grey-text text-darken-4 secondary-content" >
-        <?php echo \App\Util\Util::formataDataDiaMesAno($observacao->getDataPostagem()); ?>
+                                        <?php echo \App\Util\Util::formataDataDiaMesAno($observacao->getDataPostagem()); ?>
                                     </p>
                                     <div>
                                         <strong class="grey-text text-darken-4"><?= $observacao->getUsuario()->getNome(); ?></strong>
 
                                         <p class="grey-text text-darken-2" >
-        <?= $observacao->getConteudo(); ?>
+                                            <?= $observacao->getConteudo(); ?>
                                         </p>
                                     </div>
 
@@ -379,11 +382,11 @@
             <div class="col s1">
                 <button class="waves-effect blue btn" name="salvar" type="submit">salvar</button>
             </div>
-    <?php endif; ?> 
+        <?php endif; ?> 
 
 
 
-<?php else: ?>
+    <?php else: ?>
 
         <div class="input-field col s12">
             <i class="material-icons prefix">event</i>
@@ -430,7 +433,7 @@
 
                 <select name="setor" <?= $disabled; ?>>
                     <option value="" disabled selected>Setor</option>
-    <?php if (isset($setores) && count($setores) > 0): foreach ($setores as $setor):; ?>
+                    <?php if (isset($setores) && count($setores) > 0): foreach ($setores as $setor):; ?>
 
                             <option value="<?= $setor->getId(); ?>" ><?= $setor->getNome(); ?></option>
 
@@ -450,7 +453,7 @@
 
         <ul class="collection" style="max-height: 300px; overflow-y: scroll">
 
-    <?php if (isset($cursos) && count($cursos) > 0): foreach ($cursos as $curso): ?>
+            <?php if (isset($cursos) && count($cursos) > 0): foreach ($cursos as $curso): ?>
                     <li class="collection-item">
                         <input class="limited" type="checkbox" id="<?= $curso->getId() ?>" value="<?= $curso->getId() ?>" name="curso[]"/>
                         <label for="<?= $curso->getId() ?>" ><?= $curso->getNome() ?></label>
@@ -462,7 +465,7 @@
                 <li class="collection-item">
                     <span class="title"></span>
                 </li>
-    <?php endif; ?>
+            <?php endif; ?>
         </ul>
 
 
@@ -633,7 +636,7 @@
             <button class="waves-effect blue btn" name="salvar" type="submit">salvar</button>
         </div>
 
-<?php endif; ?>
+    <?php endif; ?>
     <div class="col s1 offset-s2 offset-l1">
         <a href="projeto/pesquisa" class="waves-effect white blue-text btn">Cancelar</a>
     </div>

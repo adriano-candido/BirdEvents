@@ -42,6 +42,7 @@ class Roteador extends Controlador {
                 && $nomeDaClasse != "VitrineControle" 
                 && $nomeDaClasse != "ErrorControle"
                 && ($this->url[0] . "/" . $this->url[1] != "visitante/cadastro")                
+                && ($this->url[0] . "/" . $this->url[1] != "certificado/validacao")
                 && \App\Modelos\Login::checaPermissao($this->url[0].".".$this->url[1]) != 1){
             $this->redirecionar("Error/" . $this->url[0].".".$this->url[1]);
         }

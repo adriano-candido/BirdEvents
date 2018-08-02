@@ -11,10 +11,15 @@ var permissoes = {
         'Certificado.Vinculados.0',
         'Certificado.Pesquisa_Por_Usuário.1',
         'Certificado.Vincular_Certificados.1',
+        'Certificado.Validação.1',
         'Curso.Cadastro.1',
         'Curso.Edição.0',
         'Curso.Pesquisa.1',
         'Curso.Visualização.0',
+        'Iniciação.Cadastro.1',
+        'Iniciação.Edição.0',
+        'Iniciação.Pesquisa.1',
+        'Iniciação.Visualização.0',
         'Professor.Edição.0',
         'Professor.Pesquisa.1',
         'Professor.Visualização.0',
@@ -50,10 +55,15 @@ var permissoes = {
         'Certificado.Vinculados.0',
         'Certificado.Pesquisa_Por_Usuário.1',
         'Certificado.Vincular_Certificados.1',
+        'Certificado.Validação.1',
         'Curso.Cadastro.1',
         'Curso.Edição.0',
         'Curso.Pesquisa.1',
         'Curso.Visualização.0',
+        'Iniciação.Cadastro.1',
+        'Iniciação.Edição.0',
+        'Iniciação.Pesquisa.1',
+        'Iniciação.Visualização.0',
         'Professor.Edição.0',
         'Professor.Pesquisa.1',
         'Professor.Visualização.0',
@@ -79,16 +89,19 @@ var permissoes = {
     ],
     'professor' :[
         'Certificado.Pesquisa.1',
+        'Certificado.Validação.1',
         'Projeto.Cadastro.1',
         'Projeto.Edição.0',
         'Projeto.Pesquisa.1',
         'Projeto.Visualização.0'               
     ],
     'aluno' :[
-        'Certificado.Pesquisa.1'
+        'Certificado.Pesquisa.1',
+        'Certificado.Validação.1'
     ],
     'visitante' :[
-        'Certificado.Pesquisa.1'
+        'Certificado.Pesquisa.1',
+        'Certificado.Validação.1'
     ]
 };
 

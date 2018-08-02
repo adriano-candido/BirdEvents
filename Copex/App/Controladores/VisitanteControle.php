@@ -101,7 +101,9 @@ class VisitanteControle extends Controlador {
                     $usuariosComEsseCPF = $this->dao->mudarEntidade('usuario')->pesquisarOnde('cpf', $usuario->getCpf());
 
 
-                    if (count($usuariosComEsseCPF) > 0) {
+                    if (!Util::validarCPF($cpf)){                        
+                        $this->retornos[] = "CPF inválido!";
+                    } else if(count($usuariosComEsseCPF) > 0) {
                         $this->retornos[] = "CPF já está cadastrado. Informe um CPF diferente";
                     } else {
                         $usuario->setId($this->dao->mudarEntidade('usuario')->salvar($usuario));

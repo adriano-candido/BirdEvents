@@ -28,7 +28,7 @@ class Util {
         'Certificado.Cadastro.1',
         'Certificado.Edição.0',
         'Certificado.Pesquisa.1',
-        'Certificado.Visualização.0',        
+        'Certificado.Visualização.0',
         'Certificado.Visualização_Geral.0',
         'Certificado.Vinculados.0',
         'Certificado.Pesquisa_Por_Usuário.1',
@@ -38,21 +38,21 @@ class Util {
         'Curso.Cadastro.1',
         'Curso.Edição.0',
         'Curso.Pesquisa.1',
-        'Curso.Visualização.0',        
+        'Curso.Visualização.0',
         'Iniciação.Cadastro.1',
         'Iniciação.Edição.0',
         'Iniciação.Pesquisa.1',
-        'Iniciação.Visualização.0',        
+        'Iniciação.Visualização.0',
         'Professor.Edição.0',
         'Professor.Pesquisa.1',
         'Professor.Visualização.0',
         'Projeto.Cadastro.1',
         'Projeto.Edição.0',
         'Projeto.Pesquisa.1',
-        'Projeto.Visualização.0',        
+        'Projeto.Visualização.0',
         'Projeto.Visualização_Geral.0',
         'Projeto.Avaliar.0',
-        'Projeto.Exclusão.0',        
+        'Projeto.Exclusão.0',
         'Setor.Cadastro.1',
         'Setor.Edição.0',
         'Setor.Pesquisa.1',
@@ -66,8 +66,6 @@ class Util {
         'Visitante.Pesquisa.1',
         'Visitante.Visualização.0'
     ];
-    
-    
     public static $icones = [
         "Aluno" => "account_box",
         "Certificado" => "chrome_reader_mode",
@@ -163,8 +161,26 @@ class Util {
         return utf8_encode(preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ç)/", "/(Ç)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U c C n N"), $string));
     }
 
-    public static function getBaseURL(){
-        return  '/birdevents/copex/';#index.php?pg=';
+    public static function validarCPF($cpf) {
+        $cpf = preg_replace('/[^0-9]/', '', (string) $cpf);
+        // Valida tamanho
+        if (strlen($cpf) != 11)
+            return false;
+        // Calcula e confere primeiro dígito verificador
+        for ($i = 0, $j = 10, $soma = 0; $i < 9; $i++, $j--)
+            $soma += $cpf{$i} * $j;
+        $resto = $soma % 11;
+        if ($cpf{9} != ($resto < 2 ? 0 : 11 - $resto))
+            return false;
+        // Calcula e confere segundo dígito verificador
+        for ($i = 0, $j = 11, $soma = 0; $i < 10; $i++, $j--)
+            $soma += $cpf{$i} * $j;
+        $resto = $soma % 11;
+        return $cpf{10} == ($resto < 2 ? 0 : 11 - $resto);
+    }
+
+    public static function getBaseURL() {
+        return '/birdevents/copex/'; #index.php?pg=';
         #return  '/copex/';
     }
 

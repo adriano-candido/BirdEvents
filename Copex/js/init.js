@@ -256,7 +256,7 @@ $(document).ready(function () {
     $('.cpf').blur(function () {
         if (!validarCPF($(this).val())) {
             Materialize.toast("CPF Inválido", 4000);
-            // $(this).val('');
+            $(this).val('');
         }
     });
 
